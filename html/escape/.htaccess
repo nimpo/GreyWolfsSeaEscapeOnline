@@ -1,0 +1,6 @@
+php_value include_path '../../lib'
+AuthName "GWSE Login"
+AuthType Basic
+AuthBasicProvider leaders scouts
+Require valid-user
+ErrorDocument 401 /error/scouts/401.php

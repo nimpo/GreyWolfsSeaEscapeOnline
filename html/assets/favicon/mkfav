@@ -1,0 +1,62 @@
+#!/bin/bash
+
+###########
+# Scriptify https://dev.to/masakudamatsu/favicon-nightmare-how-to-maintain-sanity-3al7
+#
+
+file -L "$1" |grep -q " SVG " || exit 1
+
+for a in 16 32 48 64 192 512
+do
+#  convert -size ${a}x${a} -background none "$1" -adaptive-resize ${a}x${a} favicon-${a}.png
+  inkscape "$1" --export-type=png --export-filename=favicon-${a}.png --export-width=$a --export-height=$a
+#  inkscape --without-gui --actions="export-width=${a} export-filename:favicon-${a}.png; export-do;" "$1"
+done 
+
+convert favicon-16.png favicon-32.png favicon-48.png favicon-64.png favicon.ico
+
+mv favicon-192.png android-chrome-192x192.png
+mv favicon-512.png android-chrome-512x512.png
+
+#inkscape --without-gui --actions="export-background:white; export-filename:.png; export-do; export-background:red; export-filename:triangle_red.png" my_file.svg
+#inkscape --without-gui --actions="export-background:white; export-width=${140} export-filename:apple-touch-icon-140.png; export-do;" "$1"
+inkscape "$1" --export-type=png --export-background=white --export-filename=apple-touch-icon-140.png --export-width=140 --export-height=140
+
+#convert -background white -adaptive-resize 140x140 -gravity center -extent 180x180 "$1" apple-touch-icon.png
+convert apple-touch-icon-140.png -bordercolor white -border 20x20 apple-touch-icon.png
+
+
+
+cat <<EOF > site.webmanifest
+{
+    "name": "Your website name",
+    "short_name": "A shorter version of your website name",
+    "icons": [
+        {
+            "src": "/assets/favicon/android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/assets/favicon/android-chrome-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "theme_color": "#000000",
+    "background_color": "#ffffff",
+    "display": "standalone"
+}
+EOF
+
+
+cat <<EOF
+Add this to your html heads:
+
+<link rel="icon" href="/assets/favicon/favicon.ico" sizes="48x48" >
+<link rel="icon" href="/assets/favicon/favicon.svg" sizes="any" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/favicon/apple-touch-icon.png"/>
+<link rel="manifest" href="/assets/favicon/site.webmanifest" />
+EOF
+
+
