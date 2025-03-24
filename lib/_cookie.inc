@@ -28,7 +28,6 @@ function getGroupFromGroupCookie() {
 }
 
 function setJackCookie($user,$lat,$lng) {
-  if ( ( $key = getApr1($user) ) == null ) return false;
   $key=getApr1($user,"user") ?? getApr1($user,"leader");
   if ( $key == null ) { return false; }
   $jacklat=encrypt("$lat",$key);
