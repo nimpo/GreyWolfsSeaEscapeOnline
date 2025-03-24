@@ -221,8 +221,7 @@ function makeInteractive(evt) {
 
           function press (evt) {
             let qotsmatrix=QOTS.getCTM();
-            //BBBBBBBBBBBBBB
-            if (! /^check-[0-8][0-8]$/.test(evt.target.id) ) {return;}
+            if (! /^click-[0-8][0-8]$/.test(evt.target.id) ) { return;}
             let encodedpos=evt.target.id.slice(-2);
             let code = (parseInt(encodedpos[0], 10)*parseInt(encodedpos[1], 10))%10;
             console.log("code="+code);
