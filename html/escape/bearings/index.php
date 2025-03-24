@@ -131,6 +131,24 @@ ob_end_clean();
     <script type="text/javascript">
 <![CDATA[
 DEBUG=false;
+function landscape() {
+  let e=document.documentElement;
+  if (e.requestFullscreen) { e.requestFullscreen(); console.log("Gone Full Screen! e.requestFullscreen");}
+  else if (e.mozRequestFullScreen) { e.mozRequestFullScreen(); console.log("Gone Full Screen! e.mozRequestFullscreen"); }
+  else if (e.webkitRequestFullscreen) { e.webkitRequestFullscreen(); console.log("Gone Full Screen! e.webkitRequestFullscreen");}
+  else if (e.msRequestFullscreen) { e.msRequestFullscreen(); console.log("Gone Full Screen! e.msRequestFullscreen");}
+  let o=window.screen.orientation;
+  if (o) { <!-- cos sarari did not like it -->
+    if (o.lock) window.screen.orientation.lock('landscape')
+              .then(() => {svg.removeEventListener('mousedown', mousedown);
+                           svg.removeEventListener('mousemove', mousemove);
+                           svg.removeEventListener('mouseup', mouseup);
+                           svg.removeEventListener('mouseleave', mouseleave); }) // Removing mouse if we successfully applied locked screen orientation i.e. on a mobile touch device. Hacky way to get around click+touch double event
+              .catch((error) => { console.log('no rotation here');});
+  }
+  if (document.getElementById("Go")!==null) document.getElementById("Go").remove();
+}
+
 function makeInteractive(evt) {
   var svg = evt.target;  // element of SVG for which this event occured
   evt.preventDefault();
@@ -232,25 +250,6 @@ function makeInteractive(evt) {
     else { return n%m; }
   }
 
-  function landscape() {
-    let e=document.documentElement;
-    if (e.requestFullscreen) { e.requestFullscreen(); console.log("Gone Full Screen! e.requestFullscreen");}
-    else if (e.mozRequestFullScreen) { e.mozRequestFullScreen(); console.log("Gone Full Screen! e.mozRequestFullscreen"); }
-    else if (e.webkitRequestFullscreen) { e.webkitRequestFullscreen(); console.log("Gone Full Screen! e.webkitRequestFullscreen");}
-    else if (e.msRequestFullscreen) { e.msRequestFullscreen(); console.log("Gone Full Screen! e.msRequestFullscreen");}
-    let o=window.screen.orientation;
-                                                           // alert(o);
-    if (o) { <!-- cos sarari did not like it -->
-      if (o.lock) window.screen.orientation.lock('landscape')
-                .then(() => {svg.removeEventListener('mousedown', mousedown);
-                             svg.removeEventListener('mousemove', mousemove);
-                             svg.removeEventListener('mouseup', mouseup);
-                             svg.removeEventListener('mouseleave', mouseleave); }) // Removing mouse if we successfully applied locked screen orientation i.e. on a mobile touch device. Hacky way to get around click+touch double event
-                .catch((error) => { console.log('no rotation here');});
-    }
-    if (document.getElementById("Go")!==null) document.getElementById("Go").remove();
-  }
-
   function getMousePosition(evt) {
     var SVGTransform = svg.getScreenCTM();
     let x,y,cx=0,cy=0,d=0,a=0,t=0;
@@ -315,7 +314,6 @@ function makeInteractive(evt) {
       viewBoxAtSelect.width=viewBox.width;
       viewBoxAtSelect.height=viewBox.height;
     }
-    if (evt.target.id=="task") { landscape(); } 
   }
 
   function drag(evt) {
@@ -1076,7 +1074,7 @@ function makeInteractive(evt) {
   </g>
 </svg>
 <div id="Instructions">The bearing unlocks the <a href="/escape/chest/">next chest.</a>
-<button class="tool-button" id="task"  onclick="document.getElementById('Question').classList.toggle('hidden'); let me=this.querySelector('text'); me.textContent=(me.textContent=='show Task'?'hide Task':'show Task');"><svg width="55" height="24" xmlns="http://www.w3.org/2000/svg"><text id="task-bt-text" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="12" fill="black">hide Task</text></svg></button>
+<button class="tool-button" id="task"  onclick="document.getElementById('Question').classList.toggle('hidden'); let me=this.querySelector('text'); me.textContent=(me.textContent=='show Task'?'hide Task':'show Task'); landscape();"><svg width="55" height="24" xmlns="http://www.w3.org/2000/svg"><text id="task-bt-text" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="12" fill="black">hide Task</text></svg></button>
 </div>
 <div id="animatedDiv"><div id="HelpText" style="display: inline-block">Hints placed here.</div><button id="toggleButton">&#9656;</button></div>
 <div id="Question">
