@@ -218,10 +218,12 @@ function makeInteractive(evt) {
 
             requestAnimationFrame(step);
           }
-
+          const last="null";
           function press (evt) {
             let qotsmatrix=QOTS.getCTM();
-            if (! /^click-[0-8][0-8]$/.test(evt.target.id) ) { return;}
+            if (! /^click-[0-8][0-8]$/.test(evt.target.id) ) return;
+            if (last == evt.target.id) return;
+            last=evt.target.id;
             let encodedpos=evt.target.id.slice(-2);
             let code = (parseInt(encodedpos[0], 10)*parseInt(encodedpos[1], 10))%10;
             console.log("code="+code);
