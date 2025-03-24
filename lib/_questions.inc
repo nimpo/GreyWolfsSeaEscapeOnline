@@ -193,7 +193,7 @@ $questionSpecifics['pink']['Chess']    = 'Think Chess; Think QUEEN of the Seas.'
 
 $questionSpecifics['leaders']=[];
 $questionSpecifics['leaders']['Jack']     = 'Rescue Jack';
-$questionSpecifics['leaders']['Sirens']   = 'Arrr, esteemed masters o&apos; the ship&mdash;venerable leaders&mdash;while atempting this challenge you should assume membership of team 7.';
+$questionSpecifics['leaders']['Sirens']   = 'Arrr, esteemed masters o&apos; the ship&mdash;venerable leaders&mdash;while attempting this challenge you should assume membership of team 7.';
 $questionSpecifics['leaders']['Bearings'] = 'Find the Bearing from the Wind Farm to the Prow of the ship Queen of the Seas.';
 $questionSpecifics['leaders']['Transits'] = 'Find your longitude _&deg;__&apos;: You have a depth sounding of 20m and you are on the transit of the two cardinal buoys (&apos;East&apos; and &apos;South&apos;) marking the drying areas to the South East of North Chorltonden.';
 $questionSpecifics['leaders']['Chess']    = 'Think Chess; Think QUEEN of the Seas.';
