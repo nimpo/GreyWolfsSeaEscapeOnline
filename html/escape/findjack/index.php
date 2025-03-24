@@ -160,7 +160,7 @@ include 'questions.inc';
             const popupHeight = window.innerHeight*0.8; // Fixed width of the popup
             popup.style.background = "white";
             const centre = map.getCenter();
-	          let form='<form action="/escape/foundjack/" method="POST" style="display: inline;"><input type="hidden" name="team" value="1"><input type="hidden" name="Q" value="0"><input type="hidden" name="lat" value="'+ctr.lat().toFixed(6)+'" /><input type="hidden" name="lng" value="'+ctr.lng().toFixed(6)+'" /><button>here</button>';
+	          let form='<form action="/escape/foundjack/" method="POST" style="display: inline;"><input type="hidden" name="team" value="1"><input type="hidden" name="Q" value="0"><input type="hidden" name="lat" value="'+centre.lat().toFixed(6)+'" /><input type="hidden" name="lng" value="'+centre.lng().toFixed(6)+'" /><button>here</button>';
             popup.innerHTML=`<div style="margin: auto;"><div>Ah! Marvelous! You've found me. I was getting worried; nearly all the rum is gone! I had a backup plan though; course I did! </div><div style="text-align:right">Now, do us both a favour and click `+form+`. Your quest awaits, savvy?...</div></div>`;
             popup.style.position = "absolute";
             popup.style.width = ""+popupWidth+"px";
