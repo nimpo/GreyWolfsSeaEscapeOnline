@@ -659,7 +659,7 @@ $teams[6][7][1]="N";
         <button class="tool-button" id="key"  onclick="document.getElementById('svgkey').classList.toggle('hidden'); let me=this.querySelector('text'); me.textContent=(me.textContent=='show Key'?'hide Key':'show Key');"><svg width="55" height="24" xmlns="http://www.w3.org/2000/svg"><text id="key-bt-text" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="12" fill="black">show Key</text></svg></button>
         <button class="tool-button" id="taskbt"  onclick="document.getElementById('task').classList.toggle('hidden'); let me=this.querySelector('text'); me.textContent=(me.textContent=='show Task'?'hide Task':'show Task'); landscape();"><svg width="55" height="24" xmlns="http://www.w3.org/2000/svg"><text id="key-bt-text" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="12" fill="black">hide Task</text></svg></button>
       </p>
-      </div><button id="toggleButton">&#9656;</button>
+      </div><button id="toggleButton2">&#9656;</button>
     </div>
     <div id="animatedDiv"><div id="HelpText" style="display: inline-block">Hints placed here.</div><button id="toggleButton">&#9656;</button></div>
   </body>
