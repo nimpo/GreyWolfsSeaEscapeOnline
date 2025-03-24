@@ -42,8 +42,8 @@ function getJackCookie($user,$ll) {
   elseif ($ll == "lng") $var = $_COOKIE['jacklng'] ?? false;
   else return null;
   if ( $var === false ) return null;
-  if ( $key == false ) { return false; }
   $key=getApr1($user,"user") ?? getApr1($user,"leader");
+  if ( $key == false ) { return false; }
   return decrypt($var,$key);
 }
 ?>
