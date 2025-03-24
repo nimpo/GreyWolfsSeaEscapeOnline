@@ -171,24 +171,6 @@ function makeInteractive(evt) {
   }
 ?>
 
-  function landscape() {
-    let e=document.documentElement;
-    if (e.requestFullscreen)            { e.requestFullscreen(); }
-    else if (e.mozRequestFullScreen)    { e.mozRequestFullScreen(); }
-    else if (e.webkitRequestFullscreen) { e.webkitRequestFullscreen(); }
-    else if (e.msRequestFullscreen)     { e.msRequestFullscreen(); }
-    let o=window.screen.orientation;
-    if (o) { <!-- cos sarari did not like it -->
-      if (o.lock) window.screen.orientation.lock('landscape')
-        .then(() => {svg.removeEventListener('mousedown', mousedown);
-                     svg.removeEventListener('mousemove', mousemove);
-                     svg.removeEventListener('mouseup', mouseup);
-                     svg.removeEventListener('mouseleave', mouseleave); }) // Removing mouse if we successfully applied locked screen orientation i.e. on a mobile touch device. Hacky way to get around click+touch double event
-        .catch((error) => { console.log('no rotation here');});
-    }
-    if (document.getElementById("Go")!==null) document.getElementById("Go").remove();
-  }
-
   svg.addEventListener('mousedown', mousedown);
   svg.addEventListener('mousemove', mousemove);
   svg.addEventListener('mouseup', mouseup);
@@ -270,20 +252,11 @@ function makeInteractive(evt) {
   }
 
   function getMousePosition(evt) {
-/*    var SVGTransform = svg.getScreenCTM();
-    if (evt.touches) { evt = evt.touches[0]; }
-    return {
-      x: (evt.clientX - SVGTransform.e) / SVGTransform.a,  // translate then scale x (no rotation or skew)
-      y: (evt.clientY - SVGTransform.f) / SVGTransform.d   // translate then scale y (no rotation or skew)
-    };
-*/
     var SVGTransform = svg.getScreenCTM();
     let x,y,cx=0,cy=0,d=0,a=0,t=0;
     if (evt.touches) {
       cx=x=(evt.touches[0].clientX - SVGTransform.e) / SVGTransform.a;
       cy=y=(evt.touches[0].clientY - SVGTransform.f) / SVGTransform.d;
-//      cx=x;
-//      cy=y;
       if (evt.touches.length>1) {
         t=evt.touches.length;
         cx=((evt.touches[0].clientX + evt.touches[1].clientX)/2 - SVGTransform.e) / SVGTransform.a;
@@ -294,55 +267,8 @@ function makeInteractive(evt) {
     } else {
       cx=x=(evt.clientX - SVGTransform.e) / SVGTransform.a;
       cy=y=(evt.clientY - SVGTransform.f) / SVGTransform.d;
-//      cx=x;
-//      cy=y;
     }
     return {x:x,y:y,cx:cx,cy:cy,d:d,a:a,t:t};
-/*    if (evt.touches) { 
-      if (evt.touches.length>1) {
-        return {
-          x: ((evt.touches[0].clientX + evt.touches[1].clientX)/2 - SVGTransform.e) / SVGTransform.a,
-          y: ((evt.touches[0].clientY + evt.touches[1].clientY)/2 - SVGTransform.f) / SVGTransform.d,
-          d: Math.sqrt((evt.touches[0].clientX-evt.touches[1].clientX)**2+(evt.touches[0].clientY-evt.touches[1].clientY)**2)
-        }
-      }
-      else {
-        return {
-          x: (evt.touches[0].clientX - SVGTransform.e) / SVGTransform.a,
-          y: (evt.touches[0].clientY - SVGTransform.f) / SVGTransform.d,
-          d: 0
-        }
-      }
-    }
-    return {
-      x: (evt.clientX - SVGTransform.e) / SVGTransform.a,  // translate then scale x (no rotation or skew)
-      y: (evt.clientY - SVGTransform.f) / SVGTransform.d,   // translate then scale y (no rotation or skew)
-      d: 0
-    };
-*/
-/*    var SVGTransform = svg.getScreenCTM();
-    var x,y,d=0;
-    if (evt.touches) {
-      if(evt.touches.length>1) {
-          x=((evt.touches[0].clientX+evt.touches[1].clientX)/2);
-          y=((evt.touches[0].clientY+evt.touches[1].clientY)/2);
-          d=Math.sqrt((evt.touches[0].clientX+evt.touches[1].clientX)**2+(evt.touches[0].clientY+evt.touches[1].clientY)**2);
-        }
-      else { 
-        x=evt.touches[0].clientX; y=evt.touches[0].clientY; }
-    } else {
-      x=evt.clientX;
-      y=evt.clientY;
-    }
-    x=(x - SVGTransform.e) / SVGTransform.a;
-    y=(y - SVGTransform.f) / SVGTransform.d;
-    d=d/SVGTransform.a;
-    return {
-      x: (x - SVGTransform.e) / SVGTransform.a,  // translate then scale x (no rotation or skew)
-      y: (y - SVGTransform.f) / SVGTransform.d,  // translate then scale y (no rotation or skew)
-      d: d/SVGTransform.a // assume fixed aspect ratio 
-      };
-*/
   }
 
   function insertOrUseRotation(el) {
@@ -389,6 +315,7 @@ function makeInteractive(evt) {
       viewBoxAtSelect.width=viewBox.width;
       viewBoxAtSelect.height=viewBox.height;
     }
+    if (evt.target.id=="task") { landscape(); } 
   }
 
   function drag(evt) {
@@ -1149,7 +1076,7 @@ function makeInteractive(evt) {
   </g>
 </svg>
 <div id="Instructions">The bearing unlocks the <a href="/escape/chest/">next chest.</a>
-<button class="tool-button" id="task"  onclick="document.getElementById('Question').classList.toggle('hidden'); let me=this.querySelector('text'); me.textContent=(me.textContent=='show Task'?'hide Task':'show Task'); landscape();"><svg width="55" height="24" xmlns="http://www.w3.org/2000/svg"><text id="task-bt-text" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="12" fill="black">hide Task</text></svg></button>
+<button class="tool-button" id="task"  onclick="document.getElementById('Question').classList.toggle('hidden'); let me=this.querySelector('text'); me.textContent=(me.textContent=='show Task'?'hide Task':'show Task');"><svg width="55" height="24" xmlns="http://www.w3.org/2000/svg"><text id="task-bt-text" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="12" fill="black">hide Task</text></svg></button>
 </div>
 <div id="animatedDiv"><div id="HelpText" style="display: inline-block">Hints placed here.</div><button id="toggleButton">&#9656;</button></div>
 <div id="Question">
