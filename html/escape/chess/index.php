@@ -94,9 +94,27 @@ ob_end_clean();
       </style>
       <script>
 <![CDATA[
-        function makeInteractive(evt) {
-          var svg = evt.target;
-          evt.preventDefault();
+function landscape() {
+  let e=document.documentElement;
+  if (e.requestFullscreen)            { e.requestFullscreen(); }
+  else if (e.mozRequestFullScreen)    { e.mozRequestFullScreen(); }
+  else if (e.webkitRequestFullscreen) { e.webkitRequestFullscreen(); }
+  else if (e.msRequestFullscreen)     { e.msRequestFullscreen(); }
+  let o=window.screen.orientation;
+  if (o) { <!-- cos sarari did not like it -->
+    if (o.lock) window.screen.orientation.lock('landscape')
+      .then(() => {svg.removeEventListener('mousedown', mousedown);
+                   svg.removeEventListener('mousemove', mousemove);
+                   svg.removeEventListener('mouseup', mouseup);
+                   svg.removeEventListener('mouseleave', mouseleave); }) // Removing mouse if we successfully applied locked screen orientation i.e. on a mobile touch device. Hacky way to get around click+touch double event
+      .catch((error) => { console.log('no rotation here');});
+  }
+  if (document.getElementById("Go")!==null) document.getElementById("Go").remove();
+}
+ 
+function makeInteractive(evt) {
+  var svg = evt.target;
+  evt.preventDefault();
         
 // Hints Setup
   const animatedDiv = document.getElementById("animatedDiv");
@@ -546,8 +564,8 @@ $teams[6][7][1]="N";
         <text xml:space="preserve" style="font-size:3px;line-height:1.25;font-family:'Nunito Sans 10pt';-inkscape-font-specification:'Nunito Sans 10pt, Normal';letter-spacing:0px;word-spacing:0px;stroke-width:0.264583" x="104.54235" y="228.24844" id="text119726"><tspan id="tspan119724" style="stroke-width:0.264583" x="104.54235" y="228.24844">Wind Turbine/Farm</tspan></text>
         <text xml:space="preserve" style="font-size:8px;line-height:1.25;font-family:'Nunito Sans 10pt';-inkscape-font-specification:'Nunito Sans 10pt, Normal';letter-spacing:0px;word-spacing:0px;stroke-width:0.264583" x="97.800011" y="42.147972" id="text124305"><tspan id="tspan124303" style="font-size:8px;stroke-width:0.264583" x="97.800011" y="42.147972">Key</tspan></text>
       </g>
-      <g id="task" class="hidden" style="pointer-events: none;">
-        <rect style="opacity:0.8;fill:#ffffff;stroke:none;" width="147.87675" height="147.75996" x="10.708368" y="10.71008" />
+      <g id="task" style="pointer-events: none;">
+        <rect style="opacity:0.9;fill:#ffffff;stroke:none;" width="147.87675" height="147.75996" x="10.708368" y="10.71008" />
         <g id="g111945">
           <path style="fill:#ffffff;fill-opacity:0.5;stroke:#000000;stroke-width:1;" d="m 11.599034,150.23696 c 0.04496,-4.19855 0.749061,-14.77051 9.07851,-12.51672 8.329449,2.25379 33.03606,-2.33828 40.811852,-1.65543 7.775789,0.68285 20.723619,1.95476 34.974667,1.30389 14.251047,-0.65086 36.457757,-3.36225 44.883607,2.51309 6.86367,4.78603 8.9071,10.36945 4.25479,15.02176 -6.82628,6.82628 -42.97549,-2.11457 -55.955014,2.23657 -19.982408,6.69871 -71.380007,4.16885 -75.010562,0.88445 -2.066314,-1.8693 -3.074208,-4.39205 -3.03785,-7.78761 z" />
           <text xml:space="preserve" style="font-size:3px;line-height:1.25;font-family:'Nunito Sans 10pt'" x="86.835052" y="144.47559"><tspan x="86.835052" y="144.47559" >Cardinal markers.</tspan><tspan x="86.835052" y="148.22559" >It's safe to pass to the labelled direction:</tspan><tspan x="86.835052" y="151.97559" >North/East/Sout/West of these buoyes.</tspan></text>
@@ -602,7 +620,7 @@ $teams[6][7][1]="N";
     <div id="Instructions">
       <p>The 3 waypoints for a <a href="/escape/chest/">chest</a> code: <span id="code1">_</span> <span id="code2">_</span> <span id="code3">_</span>.
         <button class="tool-button" id="key"  onclick="document.getElementById('svgkey').classList.toggle('hidden'); let me=this.querySelector('text'); me.textContent=(me.textContent=='show Key'?'hide Key':'show Key');"><svg width="55" height="24" xmlns="http://www.w3.org/2000/svg"><text id="key-bt-text" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="12" fill="black">show Key</text></svg></button>
-        <button class="tool-button" id="taskbt"  onclick="document.getElementById('task').classList.toggle('hidden'); let me=this.querySelector('text'); me.textContent=(me.textContent=='show Task'?'hide Task':'show Task');"><svg width="55" height="24" xmlns="http://www.w3.org/2000/svg"><text id="key-bt-text" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="12" fill="black">show Task</text></svg></button>
+        <button class="tool-button" id="taskbt"  onclick="document.getElementById('task').classList.toggle('hidden'); let me=this.querySelector('text'); me.textContent=(me.textContent=='show Task'?'hide Task':'show Task'); landscape();"><svg width="55" height="24" xmlns="http://www.w3.org/2000/svg"><text id="key-bt-text" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="12" fill="black">hide Task</text></svg></button>
       </p>
     </div>
     <div id="animatedDiv"><div id="HelpText" style="display: inline-block">Hints placed here.</div><button id="toggleButton">&#9656;</button></div>
