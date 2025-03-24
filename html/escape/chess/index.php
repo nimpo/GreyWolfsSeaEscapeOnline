@@ -218,7 +218,7 @@ function makeInteractive(evt) {
 
             requestAnimationFrame(step);
           }
-          const last="null";
+          var last="null";
           function press (evt) {
             let qotsmatrix=QOTS.getCTM();
             if (! /^click-[0-8][0-8]$/.test(evt.target.id) ) return;
