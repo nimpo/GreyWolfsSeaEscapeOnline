@@ -17,7 +17,7 @@ ob_end_clean();
     <style>
       html, body { margin: 0; padding: 0; overflow: hidden; }
       #chess { position: fixed; top: 0; left: 0; height: 100%; width:100%; }
-      #Instructions {
+/*      #Instructions {
         position: absolute;
         top: 10px;
         left: 30px;
@@ -29,6 +29,27 @@ ob_end_clean();
         z-index: 1;
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
       }
+*/
+
+      #Instructions {
+        position: fixed;
+        top: 10px;
+        left: -200px;
+        width: fit-content;
+        max-width: 200px;
+        background: rgba(255, 255, 255, 0.8);
+        padding: 5px 2px 5px 10px;;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        border-radius: 5px;
+        font-family: Arial, sans-serif;
+        font-size: 16px;
+        z-index: 1;
+        transition: left 1s ease-in-out;
+        overflow-wrap: break-word;
+        display: flex;
+        align-items: center;
+      }
+
       #animatedDiv {
         position: fixed;
         top: 90px;
@@ -138,6 +159,21 @@ function makeInteractive(evt) {
     toggleHelp=showHelp;
   }
   toggleButton.addEventListener("click", function () {toggleHelp();});
+
+  const Instructions = document.getElementById("Instructions");
+  const toggleButton2 = document.getElementById("toggleButton2");
+  let toggleHeader=showHeader;
+  function hideHeader() {
+    Instructions.style.left = ""+(25-Instructions.offsetWidth)+"px";
+    toggleButton2.innerHTML = "&#9656;";
+    toggleHeader=showHeader;
+  }
+  function showHeader() {
+    Instructions.style.left = "10px";
+    toggleButton2.innerHTML = "&#9666;";
+    toggleHeader=hideHeader;
+  }
+  toggleButton2.addEventListener("click", function () {toggleHeader();});
 
   var hint;
   function resetTimedHint(text,delay) {
@@ -618,10 +654,12 @@ $teams[6][7][1]="N";
       </g>
     </svg>
     <div id="Instructions">
+      <div style="display: inline-block">
       <p>The 3 waypoints for a <a href="/escape/chest/">chest</a> code: <span id="code1">_</span> <span id="code2">_</span> <span id="code3">_</span>.
         <button class="tool-button" id="key"  onclick="document.getElementById('svgkey').classList.toggle('hidden'); let me=this.querySelector('text'); me.textContent=(me.textContent=='show Key'?'hide Key':'show Key');"><svg width="55" height="24" xmlns="http://www.w3.org/2000/svg"><text id="key-bt-text" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="12" fill="black">show Key</text></svg></button>
         <button class="tool-button" id="taskbt"  onclick="document.getElementById('task').classList.toggle('hidden'); let me=this.querySelector('text'); me.textContent=(me.textContent=='show Task'?'hide Task':'show Task'); landscape();"><svg width="55" height="24" xmlns="http://www.w3.org/2000/svg"><text id="key-bt-text" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="12" fill="black">hide Task</text></svg></button>
       </p>
+      </div><button id="toggleButton">&#9656;</button>
     </div>
     <div id="animatedDiv"><div id="HelpText" style="display: inline-block">Hints placed here.</div><button id="toggleButton">&#9656;</button></div>
   </body>
