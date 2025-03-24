@@ -17,20 +17,6 @@ ob_end_clean();
     <style>
       html, body { margin: 0; padding: 0; overflow: hidden; }
       #chess { position: fixed; top: 0; left: 0; height: 100%; width:100%; }
-/*      #Instructions {
-        position: absolute;
-        top: 10px;
-        left: 30px;
-        background: rgba(255, 255, 255, 0.8);
-        padding: 5px 10px;
-        border-radius: 5px;
-        font-family: Arial, sans-serif;
-        font-size: 14px;
-        z-index: 1;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-      }
-*/
-
       #Instructions {
         position: fixed;
         top: 10px;
@@ -190,9 +176,6 @@ function makeInteractive(evt) {
   }
 ?>
 
-
-
-
           svg.addEventListener('mousedown', mousedown);
           svg.addEventListener('touchstart', touchstart);
         
@@ -238,6 +221,8 @@ function makeInteractive(evt) {
 
           function press (evt) {
             let qotsmatrix=QOTS.getCTM();
+            //BBBBBBBBBBBBBB
+            if (! /^check-[0-8][0-8]$/.test(evt.target.id) ) {return;}
             let encodedpos=evt.target.id.slice(-2);
             let code = (parseInt(encodedpos[0], 10)*parseInt(encodedpos[1], 10))%10;
             console.log("code="+code);
