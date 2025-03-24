@@ -108,6 +108,25 @@ function makeInteractive(evt) {
   }
   resetTimedHint("You need to click on the screen to continue.",10000);
 
+  function landscape() {
+    let e=document.documentElement;
+    if (e.requestFullscreen)            { e.requestFullscreen(); }
+    else if (e.mozRequestFullScreen)    { e.mozRequestFullScreen(); }
+    else if (e.webkitRequestFullscreen) { e.webkitRequestFullscreen(); }
+    else if (e.msRequestFullscreen)     { e.msRequestFullscreen(); }
+    let o=window.screen.orientation;
+    if (o) { <!-- cos sarari did not like it -->
+      if (o.lock) window.screen.orientation.lock('landscape')
+        .then(() => {svg.removeEventListener('mousedown', mousedown);
+                     svg.removeEventListener('mousemove', mousemove);
+                     svg.removeEventListener('mouseup', mouseup);
+                     svg.removeEventListener('mouseleave', mouseleave); }) // Removing mouse if we successfully applied locked screen orientation i.e. on a mobile touch device. Hacky way to get around click+touch double event
+        .catch((error) => { console.log('no rotation here');});
+    }
+    if (document.getElementById("Go")!==null) document.getElementById("Go").remove();
+  }
+
+
   svg.addEventListener('mousedown', press);
   svg.addEventListener('touchstart', press);
 
@@ -126,6 +145,7 @@ function makeInteractive(evt) {
 
     if (selectedElement.id=="Go") {
       if (document.getElementById("Go")!==null) document.getElementById("Go").remove();
+      landscape();
       resetHelp();
       if (typeof hint !== undefined) { clearTimeout(hint); }
 <?php
