@@ -53,7 +53,8 @@ function toDDM($deg, $type) {
 }
 
 $fname="$groupname.json";
-$boundsjson=file_get_contents($coffeedir."/bounds/$fname");
+$boundsjson = false;
+if (file_exists($coffeedir."/bounds/$fname") {$boundsjson=file_get_contents($coffeedir."/bounds/$fname")};
 if ( $boundsjson == false ) {
   $jack="Jack's location is currently not set";
   $audio="";
