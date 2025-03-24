@@ -118,9 +118,9 @@ function landscape() {
   }
   if (document.getElementById("Go")!==null) document.getElementById("Go").remove();
 }
- 
+var svg; 
 function makeInteractive(evt) {
-  var svg = evt.target;
+  svg = evt.target;
   evt.preventDefault();
         
 // Hints Setup
