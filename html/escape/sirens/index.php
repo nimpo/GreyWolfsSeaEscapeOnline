@@ -134,7 +134,6 @@ function makeInteractive(evt) {
     echo "  otherhinttimers.push(otherhinttimers,setTimeout( () => { resetTimedHint('".$questionHints['Sirens'][$i]."',500); },".(($i+1)*20000)."));";
   }
 ?>
-//      resetTimedHint("You are team <?= $teamNo ?>. Solve the puzzle to obtain a three digit code to unlock the <a href=\"/escape/chest/\">chest here</a>",10000);
       document.getElementById("siren").play();
     }
   }
@@ -284,7 +283,7 @@ function makeInteractive(evt) {
         <text id="GoText" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" class="child" style="fill:#000000">Click Me</text>
       </g>
     </svg>
-    <div id="Instructions">You are team <?= $team ?>. Solve the puzzle to obtain a three digit code to unlock the <a href="/escape/chest/">chest here</a></div>
+    <div id="Instructions">You are team <?= $teamNo ?>. Solve the puzzle to obtain a three digit code to unlock the <a href="/escape/chest/">chest here</a></div>
     <div id="animatedDiv"><div id="HelpText" style="display: inline-block">Hints placed here.</div><button id="toggleButton">&#9656;</button></div>
   </body>
 </html>
