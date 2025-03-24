@@ -9,8 +9,10 @@ function checkJack() {
   global $coffeedir;
   global $groupname;
   global $user;
-  $fname=base64_encode($groupname).".json";
-  $boundsjson=file_get_contents($coffeedir."/bounds/$fname");
+
+  $fname="$coffeedir/bounds/$groupname.json";
+  if (!file_exists($fname)) { return null; }
+  $boundsjson=file_get_contents($fname);
   if ( $boundsjson == false ) {
     return null;
   }
