@@ -1,5 +1,6 @@
 <?php
 include 'coffee.inc';
+include 'questions.inc';
 
 #################
 # Identity of participant
@@ -21,8 +22,8 @@ if (file_exists($coffeedir."/users/$username")) {
   $groupname = file_get_contents($coffeedir."/users/$username") ?? "none";
 }  
 function lookupNo($name) {
-  $lookupDict = [ "leaders" => 0, "black" => 1, "yellow" => 2, "silver"  => 3, "blue"  => 4, "pink"  => 5, "purple" => 6 ];
-  return $lookupDict[$name] ?? null;
+  global $teams;
+  return $teams[$name] ?? null;
 }
 $teamNo=lookupNo($team);
 ?>
