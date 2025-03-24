@@ -34,9 +34,9 @@ ob_end_clean();
       #Instructions {
         position: fixed;
         top: 10px;
-        left: -200px;
+        left: -500px;
         width: fit-content;
-        max-width: 200px;
+        max-width: 500px;
         background: rgba(255, 255, 255, 0.8);
         padding: 5px 2px 5px 10px;;
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
@@ -174,6 +174,7 @@ function makeInteractive(evt) {
     toggleHeader=hideHeader;
   }
   toggleButton2.addEventListener("click", function () {toggleHeader();});
+  showHeader();
 
   var hint;
   function resetTimedHint(text,delay) {
