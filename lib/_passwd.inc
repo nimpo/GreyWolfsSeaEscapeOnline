@@ -39,9 +39,10 @@ function decrypt($data, $key) {
     return openssl_decrypt($cipherText, 'AES-256-CBC', $key, OPENSSL_RAW_DATA, $iv);
 }
 
-function getApr1($user) {  # Use a user's digested material as a noddy password for basic encrypting stuff for e.g. cookies; saves having to store another pwd
+function getApr1($user,$type) {  # Use a user's digested material as a noddy password for basic encrypting stuff for e.g. cookies; saves having to store another pwd
   global $coffeedir;
-  if (!is_readable("$coffeedir/.htpasswd")) return null;
+  $file="$coffeedir/".(($type=="leader")?".htleaderspasswd":".htpasswd");
+  if (!is_readable($file)) return null;
   $pattern = "/^".preg_quote($user,'/').':\\$apr1\\$(.*?)\$/';
   $handle = fopen("$coffeedir/.htpasswd", "r");
   if (!$handle) return null;

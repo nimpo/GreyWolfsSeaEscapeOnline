@@ -61,7 +61,7 @@ if ( $_SERVER["REQUEST_METHOD"] == "GET" ) {
   foreach ($patrols as $patrol) {
     newHTPass("$username-$patrol",$gpasswd,"$coffeedir/.htpasswd");
   }
-  newHTPass($leadername,$lpasswd,"$coffeedir/.htpasswd");
+  newHTPass($leadername,$lpasswd,"$coffeedir/.htleaderspasswd");
   newReg($username,$b64group);
 ?>
     <h2 class="subtitle">Welcome <?= $group ?></h2>

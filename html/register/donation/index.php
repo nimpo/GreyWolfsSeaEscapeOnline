@@ -71,7 +71,6 @@ while (strlen($lpasswd) < 8) { $lpasswd.=$c[random_int(0,61)]; }
 foreach ($patrols as $patrol) {
   newHTPass("$username-$patrol",$gpasswd,"$coffeedir/.htpasswd");
 }
-newHTPass($leadername,$lpasswd,"$coffeedir/.htpasswd");
 newHTPass($leadername,$lpasswd,"$coffeedir/.htleaderspasswd");
 newReg($username,$b64group);
 ?>
