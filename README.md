@@ -1,3 +1,5 @@
+## Site is locked while in testing phase
+
 ## Prerequisites
 You'll need sox, perl, bash, apache2.4, php, a domain and ssl certs to make this work.
 You'll need to edit and place etc/seascouts.conf into your apache sites-enables area (if ubuntuish).
