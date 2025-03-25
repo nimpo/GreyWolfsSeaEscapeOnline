@@ -12,7 +12,7 @@ sudo chgrp www-data coffee coffee/bounds coffee/users html/escape/audio
 ## keys for integrations
 For BMC you'll need to change the example coffee/coffeekey file
 
-# keys for access
+## keys for access
 There are two .htaccess files in the coffee dir. These are writable by www-data and require either manual setting
 ```
 $ htpasswd coffee/.htleaderspasswd <groupname>-leader
