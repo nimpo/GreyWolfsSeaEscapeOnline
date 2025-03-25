@@ -20,3 +20,10 @@ $ htpasswd coffee/.htleaderspasswd <groupname>-leader
 
 ## upkeep
 cron should be used to clear these out using the dates on files written into the coffee directory.
+
+## FYI
+Some videos used in the hints for 2 of the questions...
+
+https://youtu.be/EG0c8jC3oV4
+
+https://youtu.be/zuRyzHX-KLY
