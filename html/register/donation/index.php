@@ -2,6 +2,7 @@
 include 'buffer.inc';
 include 'coffee.inc';
 include 'passwd.inc';
+include 'cookie.inc';
 
 function newReg($u,$g) {
   global $coffeedir;
@@ -19,11 +20,14 @@ if ( $_SERVER["REQUEST_METHOD"] != "GET" ) errormsg(405,"Only GETS here!");
 # Get donation from query parameters
 #
 $jgDonationID='';
-$group='';
+$dgroup='';
 if ( preg_match('/^[0-9]+$/',$_GET["jgDonationId"]) && preg_match('/^([A-Za-z0-9\/+]{4})*([A-Za-z0-9\/+]{4}|[A-Za-z0-9\/+]{3}=|[A-Za-z0-9\/+]{2}==)$/',$_GET["group"]) ) { 
   $jgDonationID=$_GET["jgDonationId"]; // something JG sets and identifies the transaction
   $b64group=$_GET["group"]; // something I set in the url
-  $group=base64_decode($b64group);
+  $dgroup=base64_decode($b64group);
+  if ( $dgroup !== $group ) {
+    errormsg(403,'Group name was changed between leaving this site and returning; did your cookie expire or did someone fiddle with the URL. Whatever, '.$_GET["group"].', is not a valid name');
+  }
 }
 else {
   errormsg(403,'Missing donation info for group:'.$_GET["group"].", expecting Donation ID, got:".$_GET["jgDonationId"]);
