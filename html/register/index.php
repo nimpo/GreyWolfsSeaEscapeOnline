@@ -9,7 +9,7 @@ if (getGroupFromGroupCookie()) {
 
 if (file_exists("$coffeedir/coffeekey")) {
   $coffeekeyfile=file_get_contents("$coffeedir/coffeekey");
-  if ( preg_match('/^\s*COFFEE\s*=\s*([a-f0-9]+)/', $coffeekeyfile) && preg_match('/^\s*COFFEEPOT\s*=\s*(https:\/\/\S+)/', $coffeepot) ) {
+  if ( preg_match('/^\s*COFFEE\s*=\s*([a-f0-9]+)/m', $coffeekeyfile) && preg_match('/^\s*COFFEEPOT\s*=\s*(https:\/\/buymeacoffee.com\/\S+)/m', $coffeekeyfile, $coffeepot)) {
     $coffeelink=$coffeepot[1] ?? ""; // falsy
   }
 }
