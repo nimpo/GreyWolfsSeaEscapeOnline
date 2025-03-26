@@ -28,7 +28,7 @@
         <p>After I delivered the event, I thought about how to make it more widely available. So here it is. With a few updates. It can now all be done, more-or-less online.</p>
         <a name="complementary"></a>
         <h3>Sustainablity</h3>
-        <p>The wholly online version is hosted on a VM run and paid for by yours truly. As such it will only remain available while I can justify the cost. Making a donation via the registration page, one way or another, will get you immediate access. If you are unable to justify even a small donation, you should contact me if you wish to make use of this service: mike.jones at mansouthscouts.org.uk. Access rights last one month from registration but I can extend that upon request.</p>
+        <p>The wholly online version is hosted on a VM run and paid for by yours truly. As such it will only remain available while I can justify the cost. Making a donation via the registration page, one way or another, will get you immediate access. If you are unable to justify even a small donation, you should contact me if you wish to make use of this service: <span style="font-family: ScrambleN;">&lt;89;.$A@;:*&lt;#@:AB4D:FAB4:.A,+.B9</span>. Access rights last one month from registration but I can extend that upon request.</p>
         <h3>Warranty, or lack thereof</h3>
         <p>This software comes with no warranty and is maintained only with best efforts, as you might expect squeezing it into my Scout volunteer's &quot;one hour a week&quot;.</p>
         <h3>Compatability</h3>
