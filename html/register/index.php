@@ -47,7 +47,7 @@ if ($coffeelink) {
         const buttons = [];
         let i=1;
         let b;
-        while ( (b = document.getElementById("imageButton"+i)) !== null; ) { button.push(b); i++; }
+        while ( (b = document.getElementById("imageButton"+i)) !== null ) { button.push(b); i++; }
 
         const value = input.value;
         const infos = document.getElementById("infos");
