@@ -26,7 +26,8 @@
           </ul>
         <p>The only essential parts of this kit for the mostly offline version are charts and plotter printouts, and perhaps a glossary and chart key. One could have a leader hand out clues upon receipt of correct code. Otherwise <a href="https://www.amazon.co.uk/hz/wishlist/ls/27FOH60HUE97?ref_=wl_share">here's an Amazon list</a> for most of the above.</p>
         <p>After I delivered the event, I thought about how to make it more widely available. So here it is. With a few updates. It can now all be done, more-or-less online.</p>
-        <h3><a name="complementary">Sustainablity</a></h3>
+        <a name="complementary"></a>
+        <h3>Sustainablity</h3>
         <p>The wholly online version is hosted on a VM run and paid for by yours truly. As such it will only remain available while I can justify the cost. Making a donation via the registration page, one way or another, will get you immediate access. If you are unable to justify even a small donation, you should contact me if you wish to make use of this service: mike.jones at mansouthscouts.org.uk. Access rights last one month from registration but I can extend that upon request.</p>
         <h3>Warranty, or lack thereof</h3>
         <p>This software comes with no warranty and is maintained only with best efforts, as you might expect squeezing it into my Scout volunteer's &quot;one hour a week&qout;.</p>
