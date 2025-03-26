@@ -65,7 +65,7 @@ if ($coffeelink) {
           return true;
         } else {
           for (const button of [buttons]) {
-            button1.setAttribute("disabled", "true");
+            button.setAttribute("disabled", "true");
             button.classList.remove("buttons-yes");
             button.classList.add("buttons-no");
             button.firstChild.src=button.firstChild.src.replace(/^(.*)\/([^\/]+)\.([^.]+)$/, (all, path, name, ext) => {return path+'/'+name.toLowerCase()+'.'+ext; });
