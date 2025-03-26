@@ -7,6 +7,14 @@ if (getGroupFromGroupCookie()) {
   exit;
 }
 
+if (file_exists("$coffeedir/coffeekey")) {
+  $coffeekeyfile=file_get_contents("$coffeedir/coffeekey");
+  if ( preg_match('/^\s*COFFEE\s*=\s*([a-f0-9]+)/', $coffeekeyfile) && preg_match('/^\s*COFFEEPOT\s*=\s*([a-f0-9]+)/', $coffeepot) ) {
+    $coffeelink=$coffeepot[1] ?? ""; // falsy
+  }
+}
+    
+
 $host=$_SERVER['HTTP_HOST'];
 
 ?>
@@ -19,7 +27,13 @@ $host=$_SERVER['HTTP_HOST'];
         <div class="button-container">
           <button id="imageButton1" class="buttons buttons-no" disabled onclick="handleClick('23')"><img id="i23" src="/assets/jg23.svg" alt="Donate to 23rd Manchester"></button>
           <button id="imageButton2" class="buttons buttons-no" disabled onclick="handleClick('123')"><img id="i123" src="/assets/jg123.svg" alt="Donate to Chorlton Sea Scouts"></button>
-          <button id="imageButton3" class="buttons buttons-no" disabled onclick="handleClick('me')"><img id= "ime" src="/assets/bmc.svg" alt="But Grey Wolf a coffee"></button>
+<?php
+if ($coffeelink) {
+?>
+          <button id="imageButton3" class="buttons buttons-no" disabled onclick="handleClick('me')"><img id= "ime" src="/assets/bmc.svg" alt="Buy Grey Wolf a coffee"></button>
+<?php
+}
+?>
         </div>
       </div>
     </div>
@@ -29,36 +43,38 @@ $host=$_SERVER['HTTP_HOST'];
     <script>
       function checkInput() {
         const input = document.getElementById("Group");
-        const button1 = document.getElementById("imageButton1");
-        const button2 = document.getElementById("imageButton2");
-        const button3 = document.getElementById("imageButton3");
+
+        const buttons = [];
+        let i=0;
+        while ( (let b = document.getElementById("imageButton"+i)) !== null; ) { i++; button.push(b); }
+
         const value = input.value;
         const infos = document.getElementById("infos");
 
-        if (value.length > 4 && value.length < 65 && /^[A-Za-z0-9_. -]+$/.test(value)) {
-          for (const button of [button1, button2, button3]) {
+        if (value.replace(/ +/g,'').length > 4 && value.length < 65 && /^[A-Za-z0-9_. -]+$/.test(value)) { //enable/disble button and change src img /path/file.ext /path/FILE.ext to uppercase s|^(.*)/(.*)\.([^.]*)$|\1/\U\2.\3|
+          for (const button of buttons) {
             button.removeAttribute("disabled")
             button.classList.remove("buttons-no");
-            button.classList.add("buttons-yes");
-            button.firstChild.src=button.firstChild.src.split(/[/]/).slice(0,-1).join('/')+'/'+button.firstChild.getAttribute("src").split(/[\\/]/).pop().split(/\./).slice(0,-1).join('.').toUpperCase()+'.'+button.firstChild.getAttribute("src").split(/[\\/]/).pop().split(/\./).pop();
+            button.classList.add("buttons-yes")
+            button.firstChild.src=button.firstChild.src.replace(/^(.*)\/([^\/]+)\.([^.]+)$/, (all, path, name, ext) => {return path+'/'+name.toUpperCase()+'.'+ext; });
           }
 	        input.style.backgroundColor = ""; // Reset background color
 	        infos.innerHTML = "";
           infos.style.color = "#000000";
           return true;
         } else {
-          for (const button of [button1, button2, button3]) {
+          for (const button of [buttons]) {
             button1.setAttribute("disabled", "true");
             button.classList.remove("buttons-yes");
             button.classList.add("buttons-no");
-            button.firstChild.src=button.firstChild.src.split(/[/]/).slice(0,-1).join('/')+'/'+button.firstChild.getAttribute("src").split(/[\\/]/).pop().split(/\./).slice(0,-1).join('.').toLowerCase()+'.'+button.firstChild.getAttribute("src").split(/[\\/]/).pop().split(/\./).pop();
+            button.firstChild.src=button.firstChild.src.replace(/^(.*)\/([^\/]+)\.([^.]+)$/, (all, path, name, ext) => {return path+'/'+name.toLowerCase()+'.'+ext; });
           }
         }
         if (/[^A-Za-z0-9_. -]$/.test(value)) {
           input.style.backgroundColor = "#ffcccc";
           infos.innerHTML='please avoid using unreasonable chars:&nbsp;"'+value.replace(/[A-Za-z0-9_. -]/g, '')+'".';
           infos.style.color="#ff0000";
-        } else if (value.length < 5) {
+        } else if (value.replace(/ +/g,'').length < 5) {
           input.style.backgroundColor = "";
           infos.innerHTML="(too&nbsp;short)";
           infos.style.color="#ff0000";
@@ -84,7 +100,7 @@ $host=$_SERVER['HTTP_HOST'];
           window.location.href = "https://link.justgiving.com/v1/charity/donate/charityId/3500590?amount=2.00&currency=GBP&tipScheme=TipJar2.1&reference=Escape&exitUrl=https%3A%2F%2F<?=$host?>%2Fregister%2Fdonation%2f%3Fgroup%3D"+bgroup+"%26jgDonationId%3DJUSTGIVING-DONATION-ID&message=Donation%20to%20help%20with%20the%20running%20costs%20of%20Grey%20Wolf%27s%20Sea%20Escape";
         }
         else if (where=="me")  { // This is looser than the JG route as BMC has no token exchange hence relying on cookies and questions!
-          window.location.href = "https://buymeacoffee.com/EmceeArsey/e/356685";
+          window.location.href = "<?=$coffeelink?>"; //https://buymeacoffee.com/EmceeArsey/e/356685
         }
       }
     </script>

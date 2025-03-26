@@ -19,7 +19,8 @@ function getGroupFromGroupCookie() {
   $b64group=getGroupCookie();  # Could use global as set by function, but I chose to use local here for kicks and giggles.
   if ($b64group) {
     $g=$base64_decode($b64group);
-    if (preg_match("/^([A-Za-z0-9_. -]{5,64})$/",$g,$match)) {
+    $r=preg_replace('/ +/', '', $g);
+    if (preg_match("/^.{5,}/",$r) &&  preg_match("/^([A-Za-z0-9_. -]{5,64})$/",$g,$match)) {
       $group=$match[1];
       return $group;
     } 
