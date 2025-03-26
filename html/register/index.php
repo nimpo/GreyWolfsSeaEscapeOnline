@@ -64,7 +64,7 @@ if ($coffeelink) {
           infos.style.color = "#000000";
           return true;
         } else {
-          for (const button of [buttons]) {
+          for (const button of buttons) {
             button.setAttribute("disabled", "true");
             button.classList.remove("buttons-yes");
             button.classList.add("buttons-no");
