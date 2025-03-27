@@ -50,7 +50,6 @@ if ( $_SERVER["REQUEST_METHOD"] == "GET" ) {
   if ( $createdat+(86400*31) < $now ) errormsg(402,"This is an old coffee and it's gone cold!");
 
   $username=str_replace(' ','',ucwords(str_replace(['-', '_'],' ',preg_replace("/[^A-Za-z0-9 _-]/",'',$group)))); # Make Camelcase
-  if (preg_match("/^[^A-Za-z0-9 _-]*[a-z]/")) {$username=lcfirst($username);}
   $patrols=array("black","yellow","silver","blue","pink","purple");
   $leadername=$username."-leaders";
   $c="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
