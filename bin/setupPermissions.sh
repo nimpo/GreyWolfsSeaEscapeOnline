@@ -8,6 +8,8 @@ else
   exit 1
 fi
 
+[ "$1" = "-y" ] && shift && YES="yes"
+
 # Determine Apache user group (try $1 $2 then other local generic configs
 
 AUSER=$(id -un "$1" 2>/dev/null || ( . /etc/apache2/envvars ; echo $APACHE_RUN_USER | xargs -i id -un '{}' ) || sudo apachectl -S 2>/dev/null |grep ^User: |sed -e 's/^User: name="\([^"]\{1,\}\)*".*/\1/' | xargs -i id -un '{}' || grep "^User[[:space:]]" /etc/httpd/conf/httpd.conf |tail -n1 |sed -e 's/^User[[:space:]*]\([^[:space:]]*\).*/\1/' | xargs -i id -un '{}' )
@@ -27,10 +29,12 @@ echo $PARENTDIR/html/escape/audio
 echo $PARENTDIR/coffee
 echo $PARENTDIR/coffee/bounds
 echo $PARENTDIR/coffee/users
-
-echo -n "continue [y/n]? "
-read check
-echo "$check" |grep -vq '^[yY]$' && echo "Aborted" && exit 1
+if [ "$YES" != "yes" ] 
+then 
+  echo -n "continue [y/n]? "
+  read check
+  echo "$check" |grep -vq '^[yY]$' && echo "Aborted" && exit 1
+fi
 
 sudo chgrp $AGROUP $PARENTDIR/html/escape/audio $PARENTDIR/coffee $PARENTDIR/coffee/bounds $PARENTDIR/coffee/users
 sudo chmod 1775 $PARENTDIR/html/escape/audio $PARENTDIR/coffee $PARENTDIR/coffee/bounds $PARENTDIR/coffee/users
