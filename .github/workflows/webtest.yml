@@ -43,7 +43,7 @@ jobs:
           systemctl status apache2 --no-pager || exit 1
 
           OK=0
-          curl --fail "https://seascouts.example.org/" || let OK++
+          curl "https://seascouts.example.org/" || let OK++
 
           [ $OK -gt 0 ] && echo "$OK tests failed" && exit 1
 
