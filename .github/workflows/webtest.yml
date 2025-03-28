@@ -17,7 +17,7 @@ jobs:
       - name: Install Dependencies
         run: |
           sudo apt update
-          sudo apt install -y sox openssl php apache2 curl libapache2-mod-php
+          sudo apt install -y sox openssl php apache2 curl libapache2-mod-php net-tools
 
       - name: Configure Apache Virtual Host
         run: |
@@ -53,4 +53,6 @@ jobs:
         run: |
           echo "Apache Error Logs:"
           sudo journalctl -u apache2 --no-pager | tail -n 50
-
+          sudo netstat -nltp
+          sudo ps -ef
+          sudo apachectl -S
