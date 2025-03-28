@@ -17,7 +17,7 @@ jobs:
       - name: Install Dependencies
         run: |
           sudo apt update
-          sudo apt install -y sox openssl php apache2 curl libapache2-mod-php net-tools
+          sudo apt install -y sox openssl php apache2 curl libapache2-mod-php
 
       - name: Configure Apache Virtual Host
         run: |
@@ -26,7 +26,7 @@ jobs:
           bash /var/www/seascouts/bin/newAccount.sh -y -t test1
           echo "127.0.1.98 seascouts.example.org" |sudo tee -a /etc/hosts
           sudo openssl genpkey -algorithm RSA -out /var/www/seascouts/etc/key.pem
-          sudo openssl req -new -key /var/www/seascouts/etc/key.pem -out csr.pem -subj "/CN=test.example.org"
+          sudo openssl req -new -key /var/www/seascouts/etc/key.pem -out csr.pem -subj "/CN=seascouts.example.org"
           sudo openssl x509 -req -days 1 -in csr.pem -signkey /var/www/seascouts/etc/key.pem -out /var/www/seascouts/etc/cert.pem >/dev/null 2>&1
           sudo cp /var/www/seascouts/etc/cert.pem /var/www/seascouts/etc/chain.pem
           sudo cp /var/www/seascouts/etc/cert.pem /etc/ssl/certs/$(openssl x509 -in /var/www/seascouts/etc/cert.pem -noout -hash).0
@@ -40,10 +40,10 @@ jobs:
       - name: Verify PHP Pages
         run: |
           sleep 5
-          #systemctl status apache2 --no-pager || exit 1
+          systemctl status apache2 --no-pager || exit 1
 
           OK=0
-          curl --fail "https://seascouts.example.org/" || let OK++
+          curl -s --fail "https://seascouts.example.org/" || let OK++
 
           [ $OK -gt 0 ] && echo A test failed && exit 1
 
@@ -53,6 +53,3 @@ jobs:
         run: |
           echo "Apache Error Logs:"
           sudo journalctl -u apache2 --no-pager | tail -n 50
-          #sudo netstat -nltp
-          #sudo ps -ef
-          #sudo apachectl -S
