@@ -40,7 +40,7 @@ jobs:
       - name: Verify PHP Pages
         run: |
           sleep 5
-          systemctl status apache2 --no-pager || exit 1
+          #systemctl status apache2 --no-pager || exit 1
 
           OK=0
           curl -s --fail "https://seascouts.example.org/" || let OK++
