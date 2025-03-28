@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Optionally make set password for testing purposes)
+[ "$1" = "-t" ] && shift && TEST="yes"
+
 # Sanitise input
 GROUP="$*"
 echo -n "$GROUP" |tr '\n' '\r' |grep -q '[^A-Za-z0-9_. -]' && echo "Invalid Group Name" >&2 && exit 1
@@ -45,9 +48,15 @@ echo "$check" |grep -vq '^[yY]$' && echo "Aborted" && exit 1
 sudo -u "$APACHEUSER" touch "$COFFEEDIR/.htleaderspasswd"
 sudo -u "$APACHEUSER" touch "$COFFEEDIR/.htpasswd"
 
-# Generate random passwords
-dd if=/dev/urandom bs=100 count=1 status=none | LC_CTYPE=C tr '\200-\377' '\000-\177' | tr -cd A-Za-z0-9 | cut -c -8 | sudo -u "$APACHEUSER" -- awk -v U=$USERNAME -v P="$COFFEEDIR/.htleaderspasswd" '/./ {cmd="htpasswd -i "P" "U"-leaders 2>/dev/null"; print | cmd; close(cmd) ; print U"-leaders:"$0}'
-dd if=/dev/urandom bs=100 count=1 status=none | LC_CTYPE=C tr '\200-\377' '\000-\177' | tr -cd A-Za-z0-9 | cut -c -5 | sudo -u "$APACHEUSER" -- awk -v U=$USERNAME -v P="$COFFEEDIR/.htpasswd" '/./ {split("black yellow silver blue pink purple",a," "); for (t in a) {cmd="htpasswd -i "P" "U"-"a[t]" 2>/dev/null"; print | cmd; close(cmd) ; print U"-"a[t]":"$0}}'
+if [ "$TEST" = "yes" ]
+then
+  echo "test-leader" | sudo -u "$APACHEUSER" -- awk -v U=$USERNAME -v P="$COFFEEDIR/.htleaderspasswd" '/./ {cmd="htpasswd -i "P" "U"-leaders 2>/dev/null"; print | cmd; close(cmd) ; print U"-leaders:"$0}'
+  echo "test-scout" | sudo -u "$APACHEUSER" -- awk -v U=$USERNAME -v P="$COFFEEDIR/.htpasswd" '/./ {split("black yellow silver blue pink purple",a," "); for (t in a) {cmd="htpasswd -i "P" "U"-"a[t]" 2>/dev/null"; print | cmd; close(cmd) ; print U"-"a[t]":"$0}}'
+else
+  # Generate random passwords
+  dd if=/dev/urandom bs=100 count=1 status=none | LC_CTYPE=C tr '\200-\377' '\000-\177' | tr -cd A-Za-z0-9 | cut -c -8 | sudo -u "$APACHEUSER" -- awk -v U=$USERNAME -v P="$COFFEEDIR/.htleaderspasswd" '/./ {cmd="htpasswd -i "P" "U"-leaders 2>/dev/null"; print | cmd; close(cmd) ; print U"-leaders:"$0}'
+  dd if=/dev/urandom bs=100 count=1 status=none | LC_CTYPE=C tr '\200-\377' '\000-\177' | tr -cd A-Za-z0-9 | cut -c -5 | sudo -u "$APACHEUSER" -- awk -v U=$USERNAME -v P="$COFFEEDIR/.htpasswd" '/./ {split("black yellow silver blue pink purple",a," "); for (t in a) {cmd="htpasswd -i "P" "U"-"a[t]" 2>/dev/null"; print | cmd; close(cmd) ; print U"-"a[t]":"$0}}'
+fi
 
 # Put starting files in place
 echo "Locally Set on `date` by $USER" | sudo -u "$APACHEUSER" tee $COFFEEDIR/$B64GROUP >/dev/null

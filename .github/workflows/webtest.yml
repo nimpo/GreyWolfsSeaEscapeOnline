@@ -1,0 +1,52 @@
+name: Apache & PHP Test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  test-apache:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y sox openssl php apache2 curl libapache2-mod-php
+
+      - name: Configure Apache Virtual Host
+        run: |
+          sudo cp -r . /var/www/seascouts
+          bash /var/www/html/bin/setupPermissions.sh
+          bash /var/www/html/bin/newAccount.sh -t
+          sudo cat 127.0.1.98 seascouts.example.org
+          sudo openssl genpkey -algorithm RSA -out /var/www/seascouts/etc/key.pem
+          sudo openssl req -new -key /var/www/seascouts/etc/key.pem -out csr.pem -subj "/CN=test.example.org"
+          sudo openssl x509 -req -days 1 -in csr.pem -signkey /var/www/seascouts/etc/key.pem -out /var/www/seascouts/etc/cert.pem >/dev/null 2>&1
+          sudo cp /var/www/seascouts/etc/cert.pem /etc/ssl/certs/$(openssl x509 -in /var/www/seascouts/etc/cert.pem -noout -hash).0
+
+          # Restart Apache
+          sudo systemctl restart apache2
+
+      - name: Verify PHP Pages
+        run: |
+          sleep 5
+          systemctl status apache2 || exit 1
+
+          OK=0
+          curl -s --fail "https://seascouts.example.org/" || let OK++
+
+          [ $OK -gt 0 ] && echo A test failed && exit 1
+
+
+      - name: Print Apache Logs on Failure
+        if: failure()
+        run: |
+          echo "Apache Error Logs:"
+          sudo journalctl -u apache2 --no-pager | tail -n 50
+
