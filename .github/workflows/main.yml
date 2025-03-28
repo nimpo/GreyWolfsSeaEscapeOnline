@@ -1,0 +1,21 @@
+name: Spell Check
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  spell-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run codespell
+        uses: codespell-project/actions-codespell@v1
+        with:
+          path: "**/*.{html,php,md,txt}"
+          ignore_words_list: "hte,teh"
+          only_warn: true
