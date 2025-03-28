@@ -43,7 +43,7 @@ jobs:
           #systemctl status apache2 --no-pager || exit 1
 
           OK=0
-          curl -s --fail "https://seascouts.example.org/" || let OK++
+          curl --fail "https://seascouts.example.org/" || let OK++
 
           [ $OK -gt 0 ] && echo A test failed && exit 1
 
@@ -53,6 +53,6 @@ jobs:
         run: |
           echo "Apache Error Logs:"
           sudo journalctl -u apache2 --no-pager | tail -n 50
-          sudo netstat -nltp
-          sudo ps -ef
-          sudo apachectl -S
+          #sudo netstat -nltp
+          #sudo ps -ef
+          #sudo apachectl -S
