@@ -22,8 +22,8 @@ jobs:
       - name: Configure Apache Virtual Host
         run: |
           sudo cp -r . /var/www/seascouts
-          bash /var/www/seascouts/bin/setupPermissions.sh
-          bash /var/www/seascouts/bin/newAccount.sh -t
+          yes | bash /var/www/seascouts/bin/setupPermissions.sh
+          yes | bash /var/www/seascouts/bin/newAccount.sh -t
           sudo cat 127.0.1.98 seascouts.example.org
           sudo openssl genpkey -algorithm RSA -out /var/www/seascouts/etc/key.pem
           sudo openssl req -new -key /var/www/seascouts/etc/key.pem -out csr.pem -subj "/CN=test.example.org"
