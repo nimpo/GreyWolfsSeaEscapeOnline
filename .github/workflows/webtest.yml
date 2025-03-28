@@ -45,7 +45,7 @@ jobs:
           OK=0
           curl "https://seascouts.example.org/" || let OK++
 
-          [ $OK -gt 0 ] && echo "$OK tests failed" && exit 1
+          [ $OK -eq 0 ] || exit 1
 
 
       - name: Print Apache Logs on Failure
