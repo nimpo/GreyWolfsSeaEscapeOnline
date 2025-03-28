@@ -1,6 +1,8 @@
 #!/bin/bash
 
-# Optionally make set password for testing purposes)
+# Optionally set password and check tor yes (for testing purposes)
+[ "$1" = "-t" ] && shift && TEST="yes"
+[ "$1" = "-y" ] && shift && YES="yes"
 [ "$1" = "-t" ] && shift && TEST="yes"
 
 # Sanitise input
@@ -40,9 +42,12 @@ echo "  to $COFFEEDIR/.htpasswd"
 echo "Adding Registration account to $COFFEEDIR/$B64GROUP"
 echo "Adding User to account name mapping file to $COFFEEDIR/users/$USERNAME"
 echo
-echo -n "continue [y/n]? "
-read check
-echo "$check" |grep -vq '^[yY]$' && echo "Aborted" && exit 1
+if [ "$YES" != "yes" ]
+then
+  echo -n "continue [y/n]? "
+  read check
+  echo "$check" |grep -vq '^[yY]$' && echo "Aborted" && exit 1
+fi
 
 # Create if not exist
 sudo -u "$APACHEUSER" touch "$COFFEEDIR/.htleaderspasswd"
