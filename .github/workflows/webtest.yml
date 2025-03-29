@@ -43,9 +43,14 @@ jobs:
           systemctl status apache2 --no-pager || exit 1
 
           OK=0
-          curl "https://seascouts.example.org/" || let OK++
-
-          [ $OK -eq 0 ] || exit 1
+          curl -s -L --fail "https://seascouts.example.org/" || let OK++
+          curl -s -L -u test1-black:test-scout --fail "https://seascouts.example.org/escape/" || let OK+=2
+          curl -s -L -u test1-leaders:test-leader --fail "https://seascouts.example.org/leaders/private/" || let OK+=4
+          curl -s -L -u test1-leaders:test-leader -G -d "lat=53.449906" -d "lon=-2.215405" -d "len=30" --fail "https://seascouts.example.org/leaders/private/placejack/" || let OK+=8
+          sleep 15
+          curl -s -L -u test1-black:test-scout --fail "https://seascouts.example.org/escape/audio/" || let OK+=16
+          curl -s -L -u test1-black:test-scout --fail "https://seascouts.example.org/escape/findjack/bounds" |grep '{"lat":53.449906,"lng":-2.215405,"len":30}' || leg OK+=32
+          [ $OK -eq 0 ] || ( echo "$OK" ; exit 1 )
 
 
       - name: Print Apache Logs on Failure
