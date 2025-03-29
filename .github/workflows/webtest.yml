@@ -56,7 +56,7 @@ jobs:
 
       - name: Check PlaceJack
         run: |
-          curl -s -L -u Test1-leaders:test-leader -G -d "lat=53.449906" -d "lon=-2.215405" -d "len=30" --fail "https://seascouts.example.org/leaders/private/placejack/anchor"
+          curl -s -L -u Test1-leaders:test-leader -G -d "lat=53.449906" -d "lng=-2.215405" -d "len=30" --fail "https://seascouts.example.org/leaders/private/placejack/anchor"
 
       - name: Check Audio Was Produced
         run: |
