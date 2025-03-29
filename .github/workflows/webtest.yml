@@ -17,7 +17,7 @@ jobs:
       - name: Install Dependencies
         run: |
           sudo apt update
-          sudo apt install -y sox openssl php apache2 curl libapache2-mod-php
+          sudo apt install -y sox libsox-fmt-mp3 openssl php apache2 curl libapache2-mod-php
 
       - name: Configure Apache Virtual Host
         run: |
@@ -37,19 +37,45 @@ jobs:
           # Restart Apache
           sudo systemctl restart apache2
 
-      - name: Verify PHP Pages
+      - name: Verify Apache 
         run: |
           sleep 5
           systemctl status apache2 --no-pager || exit 1
 
-          OK=0
-          curl "https://seascouts.example.org/" || let OK++
+      - name: Check landing page
+        run: |
+          curl -s -L --fail "https://seascouts.example.org/"
 
-          [ $OK -eq 0 ] || exit 1
+      - name: Check Escape Private Page
+        run: |
+          curl -s -L -u Test1-black:test-scout --fail "https://seascouts.example.org/escape/"
 
+      - name: Check Leaders Private Page
+        run: |
+          curl -s -L -u Test1-leaders:test-leader --fail "https://seascouts.example.org/leaders/private/"
+
+      - name: Check PlaceJack
+        run: |
+          curl -s -L -u Test1-leaders:test-leader -G -d "lat=53.449906" -d "lng=-2.215405" -d "len=30" --fail "https://seascouts.example.org/leaders/private/placejack/anchor"
+
+      - name: Check Bounds
+        run: |
+          sleep 5
+          curl -s -L -u Test1-black:test-scout --fail "https://seascouts.example.org/escape/findjack/bounds" |grep '{"lat":53.449906,"lng":-2.215405,"len":30}'
+
+      - name: Check Audio Was Produced
+        run: |
+          sleep 90
+          curl -s -I -L -u Test1-black:test-scout "https://seascouts.co.uk/escape/audio" |grep 'Content-Type: audio/mpeg'      
+
+      - name: Check Finding Jack
+        run: |
+          curl -s -L -u Test1-black:test-leader -d "team=1" -d "Q=0" -d -d "lat=53.449907" -d "lon=-2.215404" --fail "https://seascouts.example.org/escape/foundjack/"
 
       - name: Print Apache Logs on Failure
         if: failure()
         run: |
           echo "Apache Error Logs:"
           sudo journalctl -u apache2 --no-pager | tail -n 50
+          sudo tail -n 50 /var/log/apache2/seascouts_error.log
+          ls -l /var/www/seascouts/escape/audio
