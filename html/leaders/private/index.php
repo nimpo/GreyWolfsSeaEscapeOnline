@@ -66,7 +66,7 @@ else {
   } else {
     $jack="Jack is currently at ".toDMS($bounds->lat,"lat").", ".toDMS($bounds->lng,"lon");
   }
-  $audio="The audio for Jack's distress message and Coasrguard response is here: <a href=\"/escape/audio/$groupname.mp3\">MP3</a>.";
+  $audio="The audio for Jack's distress message and Coastguard response is here: <a href=\"/escape/audio/$groupname.mp3\">MP3</a>.";
 }
 
 if ( $_SERVER["REQUEST_METHOD"] != "GET" ) { errormsg($status=405,$str="Only GETS here!"); }
