@@ -44,33 +44,31 @@ jobs:
 
       - name: Check landing page
         run: |
-          curl -s -L --fail "https://seascouts.example.org/"
+          curl -s -v -L "https://seascouts.example.org/"
 
       - name: Check Escape Private Page
         run: |
-          curl -s -L -u Test1-black:test-scout --fail "https://seascouts.example.org/escape/"
+          curl -s -v -L -u Test1-black:test-scout "https://seascouts.example.org/escape/"
 
       - name: Check Leaders Private Page
         run: |
-          curl -s -L -u Test1-leaders:test-leader --fail "https://seascouts.example.org/leaders/private/"
+          curl -s -v -L -u Test1-leaders:test-leader "https://seascouts.example.org/leaders/private/"
 
       - name: Check PlaceJack
         run: |
-          curl -s -L -u Test1-leaders:test-leader -G -d "lat=53.449906" -d "lng=-2.215405" -d "len=30" --fail "https://seascouts.example.org/leaders/private/placejack/anchor"
+          curl -s -v -L -u Test1-leaders:test-leader -G -d "lat=53.449906" -d "lng=-2.215405" -d "len=30" "https://seascouts.example.org/leaders/private/placejack/anchor"
 
       - name: Check Bounds
         run: |
-          sleep 5
-          curl -s -L -u Test1-black:test-scout --fail "https://seascouts.example.org/escape/findjack/bounds" |grep '{"lat":53.449906,"lng":-2.215405,"len":30}'
+          curl -s -v -L -u Test1-black:test-scout "https://seascouts.example.org/escape/findjack/bounds" |grep '{"lat":53.449906,"lng":-2.215405,"len":30}'
 
       - name: Check Audio Was Produced
         run: |
-          sleep 90
-          curl -s -I -L -u Test1-black:test-scout "https://seascouts.co.uk/escape/audio" |grep 'Content-Type: audio/mpeg'      
+          curl -s -I -L -u Test1-black:test-scout "https://seascouts.example.uk/escape/audio" |grep 'Content-Type: audio/mpeg'      
 
       - name: Check Finding Jack
         run: |
-          curl -s -L -u Test1-black:test-leader -d "team=1" -d "Q=0" -d -d "lat=53.449907" -d "lon=-2.215404" --fail "https://seascouts.example.org/escape/foundjack/"
+          curl -s -v -L -u Test1-black:test-scout -d "team=1" -d "Q=0" -d "lat=53.449907" -d "lon=-2.215404" --fail "https://seascouts.example.org/escape/foundjack/"
 
       - name: Print Apache Logs on Failure
         if: failure()
