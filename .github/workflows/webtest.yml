@@ -65,8 +65,8 @@ jobs:
 
       - name: Check Audio Was Produced
         run: |
-          sleep 90
-          curl -s -I -L -u Test1-black:test-scout "https://seascouts.co.uk/escape/audio" |grep 'Content-Type: audio/mpeg'      
+          sleep 30
+          curl -s -I -L -u Test1-black:test-scout "https://seascouts.example.org/escape/audio" |grep 'Content-Type: audio/mpeg'      
 
       - name: Check Finding Jack
         run: |
