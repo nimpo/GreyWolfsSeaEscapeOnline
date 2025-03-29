@@ -69,7 +69,7 @@ jobs:
 
       - name: Check Finding Jack
         run: |
-          curl -s -v -L -u Test1-black:test-scout -d "team=1" -d "Q=0" -d "lat=53.449907" -d "lon=-2.215404" --fail "https://seascouts.example.org/escape/foundjack/"
+          curl -s -v -L -u Test1-black:test-scout -d "team=1" -d "Q=0" -d "lat=53.449907" -d "lng=-2.215404" --fail "https://seascouts.example.org/escape/foundjack/"
 
       - name: Print Apache Logs on Failure
         if: failure()
