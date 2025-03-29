@@ -37,24 +37,42 @@ jobs:
           # Restart Apache
           sudo systemctl restart apache2
 
-      - name: Verify PHP Pages
+      - name: Verify Apache 
         run: |
           sleep 5
           systemctl status apache2 --no-pager || exit 1
 
-          OK=0
-          curl -s -L --fail "https://seascouts.example.org/" || let OK++
-          curl -s -L -u test1-black:test-scout --fail "https://seascouts.example.org/escape/" || let OK+=2
-          curl -s -L -u test1-leaders:test-leader --fail "https://seascouts.example.org/leaders/private/" || let OK+=4
-          curl -s -L -u test1-leaders:test-leader -G -d "lat=53.449906" -d "lon=-2.215405" -d "len=30" --fail "https://seascouts.example.org/leaders/private/placejack/" || let OK+=8
-          sleep 15
-          curl -s -L -u test1-black:test-scout --fail "https://seascouts.example.org/escape/audio/" || let OK+=16
-          curl -s -L -u test1-black:test-scout --fail "https://seascouts.example.org/escape/findjack/bounds" |grep '{"lat":53.449906,"lng":-2.215405,"len":30}' || leg OK+=32
-          [ $OK -eq 0 ] || ( echo "$OK" ; exit 1 )
+      - name: Check landing page
+        run: |
+          curl -s -L --fail "https://seascouts.example.org/"
 
+      - name: Check Escape Private Page
+        run: |
+          curl -s -L -u Test1-black:test-scout --fail "https://seascouts.example.org/escape/"
+
+      - name: Check Leaders Private Page
+        run: |
+          curl -s -L -u Test1-leaders:test-leader --fail "https://seascouts.example.org/leaders/private/"
+
+      - name: Check PlaceJack
+        run: |
+          curl -s -L -u Test1-leaders:test-leader -G -d "lat=53.449906" -d "lon=-2.215405" -d "len=30" --fail "https://seascouts.example.org/leaders/private/placejack/anchor"
+
+      - name: Check Audio Was Produced
+        run:
+          sleep 15
+          curl -s -I -L -u Test1-black:test-scout "https://seascouts.co.uk/escape/audio" |grep 'Content-Type: audio/mpeg'
+      
+      - name: Check Bounds
+          curl -s -L -u Test1-black:test-scout --fail "https://seascouts.example.org/escape/findjack/bounds" |grep '{"lat":53.449906,"lng":-2.215405,"len":30}'
+
+      - name: Check Finding Jack
+        run: |
+          curl -s -L -u Test1-black:test-leader -d "team=1" -d "Q=0" -d -d "lat=53.449907" -d "lon=-2.215404" --fail "https://seascouts.example.org/escape/foundjack/"
 
       - name: Print Apache Logs on Failure
         if: failure()
         run: |
           echo "Apache Error Logs:"
           sudo journalctl -u apache2 --no-pager | tail -n 50
+          sudo tail -n 50 /var/log/apache2/seascouts_error.log
