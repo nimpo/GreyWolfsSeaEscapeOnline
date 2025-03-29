@@ -64,6 +64,7 @@ jobs:
 
       - name: Check Audio Was Produced
         run: |
+          sleep 5
           curl -s -I -L -u Test1-black:test-scout "https://seascouts.example.uk/escape/audio" |grep 'Content-Type: audio/mpeg'      
 
       - name: Check Finding Jack
@@ -76,4 +77,3 @@ jobs:
           echo "Apache Error Logs:"
           sudo journalctl -u apache2 --no-pager | tail -n 50
           sudo tail -n 50 /var/log/apache2/seascouts_error.log
-          ls -l /var/www/seascouts/escape/audio
