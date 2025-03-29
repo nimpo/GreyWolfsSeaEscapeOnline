@@ -59,11 +59,12 @@ jobs:
           curl -s -L -u Test1-leaders:test-leader -G -d "lat=53.449906" -d "lon=-2.215405" -d "len=30" --fail "https://seascouts.example.org/leaders/private/placejack/anchor"
 
       - name: Check Audio Was Produced
-        run:
+        run: |
           sleep 15
           curl -s -I -L -u Test1-black:test-scout "https://seascouts.co.uk/escape/audio" |grep 'Content-Type: audio/mpeg'
       
       - name: Check Bounds
+        run: |
           curl -s -L -u Test1-black:test-scout --fail "https://seascouts.example.org/escape/findjack/bounds" |grep '{"lat":53.449906,"lng":-2.215405,"len":30}'
 
       - name: Check Finding Jack
