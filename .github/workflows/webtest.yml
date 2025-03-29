@@ -78,4 +78,4 @@ jobs:
           echo "Apache Error Logs:"
           sudo journalctl -u apache2 --no-pager | tail -n 50
           sudo tail -n 50 /var/log/apache2/seascouts_error.log
-          ls -l /var/www/seascouts/escape/audio
+          ls -l /var/www/seascouts/html/escape/audio
