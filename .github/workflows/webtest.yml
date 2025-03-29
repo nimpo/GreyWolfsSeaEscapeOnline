@@ -58,14 +58,15 @@ jobs:
         run: |
           curl -s -L -u Test1-leaders:test-leader -G -d "lat=53.449906" -d "lng=-2.215405" -d "len=30" --fail "https://seascouts.example.org/leaders/private/placejack/anchor"
 
-      - name: Check Audio Was Produced
-        run: |
-          sleep 60
-          curl -s -I -L -u Test1-black:test-scout "https://seascouts.co.uk/escape/audio" |grep 'Content-Type: audio/mpeg'
-      
       - name: Check Bounds
         run: |
+          sleep 5
           curl -s -L -u Test1-black:test-scout --fail "https://seascouts.example.org/escape/findjack/bounds" |grep '{"lat":53.449906,"lng":-2.215405,"len":30}'
+
+      - name: Check Audio Was Produced
+        run: |
+          sleep 90
+          curl -s -I -L -u Test1-black:test-scout "https://seascouts.co.uk/escape/audio" |grep 'Content-Type: audio/mpeg'      
 
       - name: Check Finding Jack
         run: |
@@ -77,3 +78,4 @@ jobs:
           echo "Apache Error Logs:"
           sudo journalctl -u apache2 --no-pager | tail -n 50
           sudo tail -n 50 /var/log/apache2/seascouts_error.log
+          ls -l /var/www/seascouts/escape/audio
