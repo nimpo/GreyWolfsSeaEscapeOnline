@@ -16,6 +16,6 @@ jobs:
       - name: Run codespell
         uses: codespell-project/actions-codespell@v1
         with:
-          path: "**/*.{html,php,md,txt}"
+          path: "**/*.{html,php,pl,md,txt}"
           ignore_words_list: "hte,teh"
           only_warn: true
