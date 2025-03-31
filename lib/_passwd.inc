@@ -44,7 +44,7 @@ function getApr1($user,$type) {  # Use a user's digested material as a noddy pas
   $file="$coffeedir/".(($type=="leader")?".htleaderspasswd":".htpasswd");
   if (!is_readable($file)) return null;
   $pattern = "/^".preg_quote($user,'/').':\\$apr1\\$(.*?)\$/';
-  $handle = fopen("$coffeedir/.htpasswd", "r");
+  $handle = fopen($file, "r");
   if (!$handle) return null;
   while (($line = fgets($handle)) !== false) {
     if (preg_match($pattern, $line, $matches)) {
