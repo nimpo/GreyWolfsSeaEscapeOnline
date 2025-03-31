@@ -113,29 +113,6 @@
         }
 
         // Function to update the DMS display
-
-function getXPath(element) {
-    if (!element) return null;
-    if (element.id) return `//*[@id="${element.id}"]`; // If the element has an ID, return a direct XPath.
-
-    const parts = [];
-    while (element && element.nodeType === Node.ELEMENT_NODE) {
-        let index = 1; // XPath is 1-based index
-        let sibling = element.previousElementSibling;
-        
-        while (sibling) {
-            if (sibling.nodeName === element.nodeName) index++;
-            sibling = sibling.previousElementSibling;
-        }
-
-        parts.unshift(`${element.nodeName.toLowerCase()}[${index}]`);
-        element = element.parentElement;
-    }
-    
-    return "/" + parts.join("/");
-}
-
-
         function updateDMS() {
           const center = map.getCenter();
           const lat = center.lat();
