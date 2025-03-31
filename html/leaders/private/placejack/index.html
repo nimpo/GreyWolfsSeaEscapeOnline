@@ -84,6 +84,8 @@
           let d = Math.floor(Math.abs(deg)); // Degrees
           let m = Math.floor((Math.abs(deg) - d) * 60); // Minutes
           let s = ((Math.abs(deg) - d - m / 60) * 3600).toFixed(2); // Seconds
+          if (s >= 59.995) {s=0;m+=1}
+          if (m > 59) {m=0;d+=1}
           let h = deg >= 0 ? (type === "lat" ? "N" : "E") : (type === "lat" ? "S" : "W");
           return ""+pad(d,(type==="lat"?2:3))+"&deg&nbsp;"+pad(m,2)+"'&nbsp;"+pad(s,2,2)+"&quot;&nbsp;"+h;
         }
@@ -92,6 +94,7 @@
         function toDDM(deg, type) {
           let d = Math.floor(Math.abs(deg)); // Degrees
           let m = ((Math.abs(deg) - d) * 60).toFixed(2); // Minutes
+          if (m >= 59.995) {m=0;d+=1}
           let h = deg >= 0 ? (type === "lat" ? "N" : "E") : (type === "lat" ? "S" : "W");
           return ""+pad(d,(type==="lat"?2:3))+"&deg&nbsp;"+pad(m,2,2)+"'&nbsp;"+h;
         }
