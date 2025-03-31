@@ -309,7 +309,7 @@ include 'questions.inc';
         }
       });
 
-      window.addEventListener("keydown", (event) => { // Bring back focus to map when the relevant key shortcuts are pressed (bit of a hack!)
+      document.addEventListener("keydown", (event) => { // Bring back focus to map when the relevant key shortcuts are pressed (bit of a hack!)
         const keys = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "+", "-", "Equal", "Minus", "Home", "End", "PageUp", "PageDown"];
         if (keys.includes(event.key)) {
           const mapDiv = document.querySelector('[aria-roledescription="map"]');
