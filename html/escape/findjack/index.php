@@ -94,7 +94,7 @@ include 'questions.inc';
             div.style.border = "none";
             div.style.borderWidth = "0px";
             div.style.position = "absolute";
-	          div.style.pointerEvents = "auto";
+            div.style.pointerEvents = "auto";
             div.innerHTML = this.svgContent;
 
             div.addEventListener("click", (e) => {
@@ -103,7 +103,7 @@ include 'questions.inc';
             });
 
             this.div = div;
-	          this.getPanes().overlayMouseTarget.appendChild(div);
+            this.getPanes().overlayMouseTarget.appendChild(div);
           }
 
           draw() {
@@ -115,22 +115,22 @@ include 'questions.inc';
             if (this.div) {
               const height = (sw.y - ne.y);
               if (width<11) {this.div.style.visibility="hidden";}  // Change to be based on ship size!
-	            else {this.div.style.visibility="visible";}
-	            this.div.style.left = sw.x + "px";
+              else {this.div.style.visibility="visible";}
+              this.div.style.left = sw.x + "px";
               this.div.style.top = ne.y + "px";
               this.div.style.width = width + "px";
               this.div.style.height = height + "px";
-	            this.div.style.display = "block";
-	            this.div.style.margin = "auto";
-	            const svg = this.div.querySelector("svg");
+              this.div.style.display = "block";
+              this.div.style.margin = "auto";
+              const svg = this.div.querySelector("svg");
               if (svg) {
               svg.setAttribute("width", ""+width+"px");
               svg.setAttribute("height", ""+height+"px");
               }
             }
-	          const centre = map.getCenter();
+            const centre = map.getCenter();
             if(this.bounds.contains(centre) && width>20) { this.showPopup(); }
-	          else if (document.body.contains(popup)) { popup.remove(); }
+            else if (document.body.contains(popup)) { popup.remove(); }
           }
 
           onRemove() {
@@ -145,7 +145,7 @@ include 'questions.inc';
             this.draw(); // Redraw the overlay
           }
 
-	        showPopup() {
+          showPopup() {
             if(popup === undefined) {return;}
             const overlayProjection = this.getProjection();
             const overlayPosition = this.div.getBoundingClientRect();
@@ -160,7 +160,7 @@ include 'questions.inc';
             const popupHeight = window.innerHeight*0.8; // Fixed width of the popup
             popup.style.background = "white";
             const centre = map.getCenter();
-	          let form='<form action="/escape/foundjack/" method="POST" style="display: inline;"><input type="hidden" name="team" value="1"><input type="hidden" name="Q" value="0"><input type="hidden" name="lat" value="'+centre.lat().toFixed(6)+'" /><input type="hidden" name="lng" value="'+centre.lng().toFixed(6)+'" /><button>here</button>';
+            let form='<form action="/escape/foundjack/" method="POST" style="display: inline;"><input type="hidden" name="team" value="1"><input type="hidden" name="Q" value="0"><input type="hidden" name="lat" value="'+centre.lat().toFixed(6)+'" /><input type="hidden" name="lng" value="'+centre.lng().toFixed(6)+'" /><button>here</button>';
             popup.innerHTML=`<div style="margin: auto;"><div>Ah! Marvelous! You've found me. I was getting worried; nearly all the rum is gone! I had a backup plan though; course I did! </div><div style="text-align:right">Now, do us both a favour and click `+form+`. Your quest awaits, savvy?...</div></div>`;
             popup.style.position = "absolute";
             popup.style.width = ""+popupWidth+"px";
@@ -185,9 +185,7 @@ include 'questions.inc';
 
 
         const overlay=new CustomOverlay(bounds, svgContent, map);
-
         var size=100;
-
         setTimeout(() => {
           const xhr = new XMLHttpRequest();
           xhr.open("GET", "bounds/", true);
@@ -334,7 +332,6 @@ include 'questions.inc';
           }
         }
       });
-
     </script>
     <style>
       #map {

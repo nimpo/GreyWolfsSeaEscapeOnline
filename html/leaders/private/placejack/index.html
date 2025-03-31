@@ -39,10 +39,10 @@
                     },
                     strictBounds: false, // Set to true if you want to strictly prevent moving beyond bounds
                 },
-	        mapTypeId: "satellite",
+          mapTypeId: "satellite",
           tilt: 0,
-	        styles: [ { featureType: "poi", stylers: [{ visibility: "off" }],},],
-	        disableDefaultUI: true, // Disable default controls
+          styles: [ { featureType: "poi", stylers: [{ visibility: "off" }],},],
+          disableDefaultUI: true, // Disable default controls
           zoomControl: true, // Keep zoom
         });
 
@@ -161,10 +161,10 @@ function getXPath(element) {
           if (lng !== center.lng()) { map.setCenter(new google.maps.LatLng(lat, lng)); }
         }
 
-       	function updateExtraView() {
+        function updateExtraView() {
           keepWithinBounds();
-	        updateDMS();
-	        positionCrosshairs();
+          updateDMS();
+          positionJack();
         }
         const polarOverlay = new google.maps.ImageMapType({
           getTileUrl: function (coord, zoom) {
@@ -179,15 +179,17 @@ function getXPath(element) {
           maxZoom: 22,
           name: "Polar Overlay"
         });
-        map.overlayMapTypes.push(polarOverlay)
+        map.overlayMapTypes.push(polarOverlay);
       }
+
       window.addEventListener("resize", () => {
-       const popup = document.getElementById("popup");
+        const popup = document.getElementById("popup");
         if (popup) {
           popup.style.width = ""+(window.innerWidth*0.8)+"px";
           popup.style.left = ""+((window.innerWidth - popup.offsetWidth)/2)+"px";
         }
       });
+
       document.addEventListener("keydown", (event) => { // Bring back focus to map when the relevant key shortcuts are pressed (bit of a hack!)
         const keys = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "+", "-", "Equal", "Minus", "Home", "End", "PageUp", "PageDown"];
         if (keys.includes(event.key)) {
