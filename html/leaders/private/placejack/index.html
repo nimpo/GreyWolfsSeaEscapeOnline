@@ -99,10 +99,10 @@
           return ""+pad(d,(type==="lat"?2:3))+"&deg&nbsp;"+pad(m,2,2)+"'&nbsp;"+h;
         }
 
-        function positionCrosshairs() {
+        function positionJack() {
           const mapBounds = document.getElementById("map").getBoundingClientRect();
-          crosshairs.style.top = ""+((mapBounds.top+mapBounds.height/2)-11)+"px";
-          crosshairs.style.left = ""+((mapBounds.left+mapBounds.width/2)-11)+"px";
+          jack.style.top = ""+((mapBounds.top+mapBounds.height/2)-11)+"px";
+          jack.style.left = ""+((mapBounds.left+mapBounds.width/2)-11)+"px";
         }
 
         function pad(nstr,b=1,a=0) {
@@ -207,12 +207,12 @@
         z-index: 1;
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
       }
-      #crosshairs {
+      #jack {
         position: absolute;
         width: 40px;
         height: 40px;
         z-index: 3;
-	      pointer-events: none;
+        pointer-events: none;
       }
       html,
       body {
@@ -226,7 +226,7 @@
     <div id="map">
     </div>
     <div id="dms"></div>
-    <div id="crosshairs">
+    <div id="jack">
       <img src="/assets/circle-bottom-right.svg" width="22px" height="22px"/>
     </div>
   </body>
