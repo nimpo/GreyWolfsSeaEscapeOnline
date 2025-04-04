@@ -25,6 +25,9 @@ ob_start();
 <html lang="en">
   <head>
     <meta charset="UTF-8">
+    <meta name="description" content="Official site for Grey Wolf's Sea Escape: an escape room activity for Sea Scouts introducing some key navigational concepts and marine radio basics, with a little whimsy thrown in." />
+    <meta name="keywords" content="Sea Scouts, Navigation, Escape Room, Mayday, Marine Radio, Sirens, Bearings, Transits, Buoys" />
+    <meta name="author" content="Dr Grey Wolf" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $pagetitle ?></title>
     <link rel="stylesheet" type="text/css" href="/assets/base.css" />
