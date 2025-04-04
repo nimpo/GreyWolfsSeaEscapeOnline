@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /register/
+Disallow: /leaders/
+Disallow: /escape/
+Allow: /
