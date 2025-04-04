@@ -106,6 +106,8 @@ h1, h2, h3 {
   left: 0;
   right: 0;
   bottom: 0;
+  background-color: #ffffff40;
+  border-radius: 15px;
   overflow: hidden;
   margin: var(--s1) 20vw var(--s1) 10vw;
   scrollbar-width: none;
