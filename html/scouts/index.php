@@ -6,5 +6,5 @@
       </div>
     </div>
     <div class="bottom-links">
-      <p style="margin-block-start:2px"><a href="/escape/">weigh&nbsp;anchor&nbsp;&#9875;&nbsp;&#128274;</a></p>
+      <p style="margin-block-start:2px"><a href="/escape/">weigh&nbsp;anchor&nbsp;&#9875;&nbsp;&#128274;</a> | <a href="/">vessel&nbsp;not&nbsp;under&nbsp;command&nbsp;&#128281;&#127968;</a></p>
     </div>
