@@ -4,7 +4,8 @@
   --r2: min(50vw, 80vh);
   --r3: min(20vw,30vh);
   --r4: min(10vw,10vh);
-  --s1: max(10vh,85px);
+  --s0: max(30vh,100px);
+  --s1: max(10vh,90px);
   --s2: max(5vh,25px);
   --link-color: #003982;
 }
@@ -74,7 +75,7 @@ h1, h2, h3 {
 }
 .title-link {
   position: absolute;
-  bottom: var(--s2);
+  bottom: min(var(--s2), calc(100vh - 220px));
   left: 5%;
   font-family: NunitoSansBlack;
 }
@@ -114,6 +115,10 @@ h1, h2, h3 {
   -ms-overflow-style: none;
   min-height: 80px;
 }
+.content-container-title {
+  margin: min(var(--s1), 20vh) 20vw min(var(--s0), 50vh) 10vw;
+  margin-bottom: min(var(--s0), calc(100vh - 50px));
+}
 .content-containerNP::-webkit-scrollbar {
   display: none;
 }
@@ -123,10 +128,15 @@ h1, h2, h3 {
   color: #333;
 }
 .scroll-content {
+  padding: 5px 15px 5px;
   overflow-y: auto;
   max-height: 100%;
   scrollbar-width: none;
   -ms-overflow-style: none;
+}
+.scroll-content h3 {
+    margin-block-start: 0.5em;
+    margin-block-end: 0.5em;
 }
 .scroll-content::-webkit-scrollbar {
   display: none;
