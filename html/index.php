@@ -1,5 +1,5 @@
 <?php $h1=""; include 'buffer.inc'; ?>
-    <div class="content-container">
+    <div class="content-container content-container-title">
       <div class="scroll-content" id="scrollable">
         <h3>Under Construction</h3>
         <p>This site is still undergoing tests and final tweeks. Certain areas remain locked. If you think you should be able to access some of the areas here but cannot, please contact <span aria-label="This email address is obfuscated. Please obtain my email address by other means." style="font-family: ScrambleN;">&lt;89;.$A@;:*&lt;#@:AB4D:FAB4:.A,+.B9</span>.</p>
