@@ -138,11 +138,13 @@ if ($ret != 0 ) {die "Fail3";}
 #
 sub addHiss { # creates new temporary hissfile
   my $Audio=$_[0];
-  my $len=`soxi -D "$Audio"`;
-  my ($l) = $len =~ /([0-9]+(?:\.\d{1,2})?)/;
-  my $s=$l%60;
-  my $m=($l-$s)/60;
-  my $ll=sprintf("%02d:%02.2f",$m,$s);
+  my $len=`soxi -D "$Audio"`; # time in seconds (float)
+  my ($l) = $len =~ /([0-9]+(?:\.\d{1,6})?)/; # match float to up to 6dp
+  my $s=int($l);
+  my $f=$l-$s;
+  my $m=int($s/60);
+  $s=$s%60+$f;
+  my $ll=sprintf("%02d:%05.2f",$m,$s);
   my $hissfile=mktemp();
   my $ret=system("sox","-q","-m","$Audio","/tmp/white_noise.wav","$hissfile","trim","0",$ll);
   if ($ret != 0 ) {die "Fail4";}
