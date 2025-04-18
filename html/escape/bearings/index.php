@@ -214,6 +214,7 @@ function makeInteractive(evt) {
 
   var selectedElement;
   var centre = {x:0,y:0};
+  var pcentre = {x:0,y:0};
   var selectedAt = {x:0,y:0};
   var lastAngle;
   var startAngle;
@@ -293,6 +294,7 @@ function makeInteractive(evt) {
       selectedElement = document.getElementById("protractor"); 
       selectedAt = getMousePosition(evt);
       centre = getCentre(selectedElement.parentNode);
+      pcentre = getCentre(selectedElement);
       insertOrUseRotation(selectedElement);
       lastAngle=mod(((Math.atan2(selectedAt.x-centre.x,selectedAt.y-centre.y)*180/Math.PI)),360); //get angle of leaver handle
     }
@@ -324,7 +326,6 @@ function makeInteractive(evt) {
         let thisAngle  = mod(((Math.atan2(draggedTo.x-centre.x,draggedTo.y-centre.y)*180/Math.PI)),360); // new lever position
         rotateTo = selectedElement.transform.baseVal.getItem(0).angle-(thisAngle - lastAngle);
         lastAngle = thisAngle;
-        let pcentre=getCentre(selectedElement);
         selectedElement.transform.baseVal.getItem(0).setRotate(rotateTo,pcentre.x,pcentre.y);
         document.getElementById("markerangle").innerHTML=""+mod(360-Math.round(pcentre.theta),360)+"°";
       }
