@@ -16,6 +16,6 @@ jobs:
       - name: Run codespell
         uses: codespell-project/actions-codespell@v2
         with:
-          ignore_words_list: wee,sting,ans,eyar,humber,focussed
+          ignore_words_list: wee,sting,ans,eyar,humber,focussed,thinkin,waitin,celebratin,navigatin
           skip: .git,.github,*.css
           only_warn: true

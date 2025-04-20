@@ -9,7 +9,7 @@ http_response_code(401);
       <div class="scroll-content" id="scrollable">
         <h3>Access to Wheelhouse denied.</h3>
         <p>Ship's mate, accompany this rapscallion to the Brig! To access the Bridge and Wheelhouse you need a leaders' username and password.</p>
-        <p>To gain the captians favour and admitance here you need to have <a href="/register/">registered</a>.</p> 
+        <p>To gain the captains favour and admitance here you need to have <a href="/register/">registered</a>.</p> 
       </div>
     </div>
     <div class="bottom-links">

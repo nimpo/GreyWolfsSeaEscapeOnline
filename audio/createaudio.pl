@@ -101,7 +101,7 @@ push(@cmd,"$JackAudio");
 system(@cmd);  #### Jack written to file in /tmp $JackAudio
 
 #############################
-# Create hissed version of autio subrouting
+# Create hissed version of audio subrouting
 #
 sub addHiss { # creates new temporary hissfile
   my $Audio=$_[0];

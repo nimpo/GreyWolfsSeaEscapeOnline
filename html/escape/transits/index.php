@@ -256,7 +256,7 @@ function makeInteractive(evt) {
     let transforms = el.transform.baseVal;
     let tmpg = document.createElementNS("http://www.w3.org/2000/svg", "g");
     if ( transforms.length !== 0) {
-      //Duplicate the transforms for this element then collapse it into one matrix transform (by effectively multiplying all affine matricies together NB consolidate resets current object's stack therefore we make the copy!
+      //Duplicate the transforms for this element then collapse it into one matrix transform (by effectively multiplying all affine matrices together NB consolidate resets current object's stack therefore we make the copy!
       let matrix=svg.createSVGTransform();
       for (let i=0; i<transforms.length; i++ ) { tmpg.transform.baseVal.appendItem(svg.createSVGTransformFromMatrix(transforms.getItem(i).matrix)); } // Copy Transforms
       matrix = tmpg.transform.baseVal.consolidate().matrix; // Consolidate 
@@ -317,17 +317,17 @@ function makeInteractive(evt) {
       }
       else {
         selectedAt = getMousePosition(evt);
-        dumbell=document.createElementNS("http://www.w3.org/2000/svg", 'g');
-        dumbell.setAttribute('id',"dumbell"+interactionid++);
+        dumbbell=document.createElementNS("http://www.w3.org/2000/svg", 'g');
+        dumbbell.setAttribute('id',"dumbbell"+interactionid++);
         circle=document.createElementNS("http://www.w3.org/2000/svg", 'circle');
         circle.setAttribute('cx',selectedAt.x);
         circle.setAttribute('cy',selectedAt.y);
         circle.setAttribute('r',5);
         circle.setAttribute('style','fill-opacity:0.1;stroke:#ff0000;stroke-width:1;');
         circle.setAttribute('id',"touch"+interactionid++);
-        dumbell.appendChild(circle);
-        ann.appendChild(dumbell);
-        selectedElement=dumbell;
+        dumbbell.appendChild(circle);
+        ann.appendChild(dumbbell);
+        selectedElement=dumbbell;
       }
       return
     }
@@ -378,7 +378,7 @@ function makeInteractive(evt) {
           selectedElement.parentNode.children[1].setAttribute('x2',x);
           selectedElement.parentNode.children[1].setAttribute('y2',y);
           return;
-        } else if (selectedElement.id.match(/^dumbell[0-9]+/)) {
+        } else if (selectedElement.id.match(/^dumbbell[0-9]+/)) {
           if ( selectedElement.childElementCount == 1 ) {
             line=document.createElementNS("http://www.w3.org/2000/svg", 'line');
             console.log("sel "+selectedAt.x+" to "+getMousePosition(evt).x);
@@ -451,7 +451,7 @@ function makeInteractive(evt) {
   function release(evt) {
     if (selectedElement) {
       if (interaction=='draw') {
-        if (selectedElement.id.match(/^dumbell[0-9]+/)) {
+        if (selectedElement.id.match(/^dumbbell[0-9]+/)) {
           if ( selectedElement.childElementCount == 2 ) {
             circle=document.createElementNS("http://www.w3.org/2000/svg", 'circle');
             circle.setAttribute('cx',getMousePosition(evt).x);
@@ -1107,12 +1107,12 @@ function makeInteractive(evt) {
           <g id="g152862" transform="translate(-75.402976)">
             <text xml:space="preserve" style="font-size:3px;line-height:1;font-family:'Nunito Sans 10pt';letter-spacing:0.0433191px;word-spacing:0.108298px;stroke-width:0.264583" x="247.79446" y="-10.936882" id="text571705">This chart has been prepared from the contents of Dr Grey Wolf's head, in the style of an RYA Training</text>
             <text xml:space="preserve" style="font-size:3px;line-height:1;font-family:'Nunito Sans 10pt';letter-spacing:0.0216596px;word-spacing:0.047651px;stroke-width:0.264583" x="247.79446" y="-7.9627657" id="text140875">Chart, oh, and just for fun, includes a loose adaptation of the OS Map of Brownsea Island for the training</text>
-            <text xml:space="preserve" style="font-size:3px;line-height:1;font-family:'Nunito Sans 10pt';letter-spacing:0px;word-spacing:0px;stroke-width:0.264583" x="247.79446" y="-4.9878664" id="text140877">and entertainment of SeaScouts. It is almost entierly fictitious and therefore cannot be used for navigation.</text>
+            <text xml:space="preserve" style="font-size:3px;line-height:1;font-family:'Nunito Sans 10pt';letter-spacing:0px;word-spacing:0px;stroke-width:0.264583" x="247.79446" y="-4.9878664" id="text140877">and entertainment of SeaScouts. It is almost entirely fictitious and therefore cannot be used for navigation.</text>
           </g>
         </g>
         <rect style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" id="rect619643" width="153.16518" height="14.317556" x="171.09969" y="-17.167326"/>
       </g>
-      <text xml:space="preserve" style="font-size:5.5px;line-height:1.25;font-family:'Nunito Sans 10pt';letter-spacing:0px;word-spacing:0px;fill:#800080;fill-opacity:1;stroke-width:0.264583" x="227.80507" y="13.807065" id="text621466">         <tspan id="tspan621464" style="font-size:5.5px;fill:#800080;fill-opacity:1;stroke-width:0.264583" x="227.80507" y="13.807065">NOT TO BE USED FOR NAVIGATON</tspan>      </text>
+      <text xml:space="preserve" style="font-size:5.5px;line-height:1.25;font-family:'Nunito Sans 10pt';letter-spacing:0px;word-spacing:0px;fill:#800080;fill-opacity:1;stroke-width:0.264583" x="227.80507" y="13.807065" id="text621466">         <tspan id="tspan621464" style="font-size:5.5px;fill:#800080;fill-opacity:1;stroke-width:0.264583" x="227.80507" y="13.807065">NOT TO BE USED FOR NAVIGATION</tspan>      </text>
       <g id="g626496" transform="matrix(0.61077699,0,0,0.61077699,-119.09832,294.59254)">
         <g id="g626492" transform="translate(-38.293209,0.75666725)">
           <text xml:space="preserve" style="font-size:3px;line-height:1.25;font-family:'Nunito Sans 10pt';letter-spacing:0px;word-spacing:0px;stroke-width:0.264583" x="253.33786" y="-14.173734" id="text626482">             <tspan id="tspan626480" style="stroke-width:0.264583" x="253.33786" y="-14.173734">Customer Information</tspan>          </text>
@@ -1120,7 +1120,7 @@ function makeInteractive(evt) {
         </g>
         <rect style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" id="rect626494" width="51.429989" height="11.622371" x="204.77061" y="-17.167326"/>
       </g>
-      <text xml:space="preserve" style="font-size:5.5px;line-height:1.25;font-family:'Nunito Sans 10pt';letter-spacing:0px;word-spacing:0px;fill:#800080;fill-opacity:1;stroke-width:0.264583" x="48.040619" y="287.95926" id="text645019">         <tspan id="tspan645017" style="font-size:5.5px;fill:#800080;fill-opacity:1;stroke-width:0.264583" x="48.040619" y="287.95926">NOT TO BE USED FOR NAVIGATON</tspan>      </text>
+      <text xml:space="preserve" style="font-size:5.5px;line-height:1.25;font-family:'Nunito Sans 10pt';letter-spacing:0px;word-spacing:0px;fill:#800080;fill-opacity:1;stroke-width:0.264583" x="48.040619" y="287.95926" id="text645019">         <tspan id="tspan645017" style="font-size:5.5px;fill:#800080;fill-opacity:1;stroke-width:0.264583" x="48.040619" y="287.95926">NOT TO BE USED FOR NAVIGATION</tspan>      </text>
       <text xml:space="preserve" style="font-size:8px;line-height:1.25;font-family:'Nunito Sans 10pt';letter-spacing:0px;word-spacing:0px;stroke-width:0.264583" x="374.88614" y="290.16745" id="text645023">         <tspan id="tspan645021" style="font-size:8px;stroke-width:0.264583" x="374.88614" y="290.16745">GW1</tspan>      </text>
       <text xml:space="preserve" style="font-size:8px;line-height:1.25;font-family:'Nunito Sans 10pt';letter-spacing:0px;word-spacing:0px;stroke-width:0.264583" x="-25.285036" y="-6.5502238" id="text649541" transform="scale(-1)">         <tspan id="tspan649539" style="font-size:8px;stroke-width:0.264583" x="-25.285036" y="-6.5502238">GW1</tspan>      </text>
       <g id="g761274" transform="matrix(0.7897953,0,0,0.7897953,59.514903,37.266076)">
