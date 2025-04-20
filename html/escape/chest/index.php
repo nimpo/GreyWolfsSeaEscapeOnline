@@ -90,7 +90,7 @@ function makeInteractive(evt) {
 //  document.cookie = "question=1; expires="+expires+";path=/";
 //  document.cookie = "team=black; expires="+expires+";path=/";
 
-  var svg = evt.target;  // element of SVG for which this event occured
+  var svg = evt.target;  // element of SVG for which this event occurred
   svg.addEventListener('mousedown', mousedown);
   svg.addEventListener('mousemove', mousemove);
   svg.addEventListener('mouseup', mouseup);

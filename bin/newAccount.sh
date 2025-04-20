@@ -29,7 +29,7 @@ COFFEEDIR="$PARENTDIR/coffee"
 # assume that setup has happened use file attr and guess best owner for file
 APACHEGRP=$(stat -c "%G" "$COFFEEDIR")
 APACHEUSER=$(id -un "$APACHEGRP" || getent group "$APACHEGRP" | cut -d: -f4 | cut -d, -f1)
-[ "$APACHEUSER" = "" ] && echo "Couldn't determin apache user" && exit 1
+[ "$APACHEUSER" = "" ] && echo "Couldn't determine apache user" && exit 1
 
 # Can haz apache user?
 sudo -u "$APACHEUSER" true || exit 1

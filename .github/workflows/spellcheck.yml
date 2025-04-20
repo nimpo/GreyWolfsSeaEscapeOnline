@@ -14,8 +14,8 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run codespell
-        uses: codespell-project/actions-codespell@v1
+        uses: codespell-project/actions-codespell@v2
         with:
-          path: "**/*.{html,php,pl,md,txt}"
-          ignore_words_list: "hte,teh"
-          only_warn: true
+          ignore_words_list: wee,sting,ans,eyar,humber,focussed,thinkin,waitin,celebratin,navigatin
+          skip: .git,.github,*.css
+          #only_warn: true

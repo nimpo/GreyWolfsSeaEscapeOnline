@@ -55,7 +55,7 @@ function checkAnswer(string $Q) { #use post||cookie
 # if Q is 0 checkjack Returns true if jack has been found
 # if Q is != 0: First check if there's a Post variable matching this Q's Question Check if there is set code to it's answer
 # if Q cookie is set ignore Post and set code = cookie value
-# if Q derrived code obtained matches lookup in answers return true elongate, cookie time
+# if Q derived code obtained matches lookup in answers return true elongate, cookie time
   global $answers;
   global $team;
   $ans=$answers[$team][$Q] ?? false;
