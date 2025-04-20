@@ -2,8 +2,8 @@
 
 ## Hosting prerequisites
 You'll need sox (with mp3 libs), perl, bash, apache2.4, php, a domain and ssl certs to make this work.
-You'll need to edit and place etc/seascouts.conf into your apache sites-enables area (if ubuntuish) or equivilent.
-This setup is designed for me to attempt to gain some revenue to maintain the service. You'll need to set up somthing for yourselves instead of the register pathway; note the bin/newAccount.sh script for manual account setup—usage: 
+You'll need to edit and place etc/seascouts.conf into your apache sites-enables area (if ubuntuish) or equivalent.
+This setup is designed for me to attempt to gain some revenue to maintain the service. You'll need to set up something for yourselves instead of the register pathway; note the bin/newAccount.sh script for manual account setup—usage: 
 ```
 bin/newAccount.sh "group name"
 ```

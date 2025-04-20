@@ -2,7 +2,7 @@
 include 'identity.inc';
 
 ##################
-# function to genrate apr1 MD5 hash
+# function to generate apr1 MD5 hash
 #   Saves having to exec out to htpasswd this is MD5 with many many tsp of salt iterated in.
 #
 function newHTPass($u,$p,$f) { # does no checking; Takes  username, password, .htpasswd file.

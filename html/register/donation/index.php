@@ -87,7 +87,7 @@ newReg($username,$b64group);
         <p>The password for each are &quot;<?= $gpasswd ?>&quot;. This will give your scouts access to the problems.</p>
         <p>Your leaders username is &quot;<?= $leadername ?>&quot;.
         The corresponding password will be &quot;<?= $lpasswd ?>&quot;. This will gives you access to the settings and answers pages.</p>
-        <p>Now procees to the setup page: <a href="/leaders/private/">setup</a></p>
+        <p>Now process to the setup page: <a href="/leaders/private/">setup</a></p>
       </div>
     </div>
     <button id="printButton" onclick="window.print()">Print Page</button>

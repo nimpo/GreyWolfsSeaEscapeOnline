@@ -20,7 +20,7 @@ $registered=str_replace(" ", "&nbsp;",$dtstart->format("Y-m-d H:i:s")."&nbsp;(UT
 $remaining=sprintf( "%d days, %d hours, %d minutes, %d seconds",$interval->days,$interval->h,$interval->i,$interval->s);
 
 ##################
-# function to genrate apr1 MD5 hash
+# function to generate apr1 MD5 hash
 #   Saves having to exec out to htpasswd this is MD5 with many many tsp of salt iterated in.
 #
 

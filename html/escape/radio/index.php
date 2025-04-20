@@ -414,7 +414,7 @@ function makeInteractive(evt) {
   var callsign="GB7CSG";
   var newMMSIIndex;
   var newCallIndex;
-  var curser=false;
+  var cursor=false;
   var on=false;
   var booting=false;
   var volumeFloat=0.0;
@@ -711,7 +711,7 @@ function makeInteractive(evt) {
   }
 
   function fireDistressEvent() {
-    clearTimeout(timeout); // incase mouseupped before 3s
+    clearTimeout(timeout); // in case mouseupped before 3s
     if (distressTimer<=0) {
       // SEND DISTRESS DCS MESSAGE HERE!!!
       screen.mode=3;
@@ -806,7 +806,7 @@ function makeInteractive(evt) {
     if (typeof c == "number") c=c.toString();
     if      (c=="up")   { c=(screen.channel==(Channels.list.length-1))?0:c=screen.channel+1; }
     else if (c=="down") { c=(screen.channel==0)?(Channels.list.length-1):(screen.channel-1); }
-    else if (n=Channels.list.indexOf(c)) { c=n; } // purposfully asigning n in condition
+    else if (n=Channels.list.indexOf(c)) { c=n; } // purposfully assigning n in condition
     else return;
     if (c==-1) return;
     screen.channel=c;
@@ -938,9 +938,9 @@ function makeInteractive(evt) {
       screen.rows[0]="* Update Ship's MMSI *";
       screen.rows[1]="";
       screen.rows[2]="Set MMSI: ";
-      if(!curser) curser=true; else curser=false; //toggle per draw
+      if(!cursor) cursor=true; else cursor=false; //toggle per draw
 
-      if(curser) {
+      if(cursor) {
         screen.rows[3]=" "+newMMSI.substring(0, newMMSIIndex) + '_' + newMMSI.substring(newMMSIIndex+1);
       }
       else screen.rows[3]=" "+newMMSI;
@@ -954,9 +954,9 @@ function makeInteractive(evt) {
       screen.rows[0]="* Update Sticker :) *";
       screen.rows[1]="";
       screen.rows[2]="Set Callsign:";
-      if(!curser) curser=true; else curser=false; //toggle per draw
+      if(!cursor) cursor=true; else cursor=false; //toggle per draw
 
-      if(curser) {
+      if(cursor) {
         screen.rows[3]=" "+newCall.substring(0, newCallIndex) + '_' + newCall.substring(newCallIndex+1);
       }
       else screen.rows[3]=" "+newCall;
@@ -972,14 +972,14 @@ function makeInteractive(evt) {
   var sweep=setInterval(screenSweep,500);
 
   function encodeDSC7bit (bit) { // This function should take a number 0-127 and return little endian 7 bit representation with 3 bit checksum c.f. ITU-R M.493-16
-    if (typeof bit != 'number') bit=parseInt(bit); // expecting 0 to 127 (will trucate if float
+    if (typeof bit != 'number') bit=parseInt(bit); // expecting 0 to 127 (will truncate if float
     if (bit<0||bit>127) throw new TypeError('expecting number between 0 and 127');; // should throw error here
     let binLEstr = (bit.toString(2).split("").reverse().join("")+'0000000').substr(0,7); // little endian binary string 7 chars
     let binBEsum = (7-binLEstr.split("").reduce((subtot,n)=>subtot+parseInt(n),0)).toString(2).padStart(3,'0'); // big endian binary string of 7 - count of 1s
     return binLEstr+binBEsum;
   }
 
-  function encodeDSCNumber (number) { // This function splits arbretary long number into couplets with leading 0 if uneven then returns concatination of encodeDSC7bit() 
+  function encodeDSCNumber (number) { // This function splits arbretary long number into couplets with leading 0 if uneven then returns concatinetion of encodeDSC7bit() 
     if (typeof number == 'number') number=number.toString() //convert to str
     if(number.length%2==1) number="0"+number;               //number must be in couplets
     let msg="";

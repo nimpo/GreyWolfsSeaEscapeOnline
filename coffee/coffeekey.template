@@ -1,2 +1,2 @@
-COFFEE=<BMC webook secret key. It should be an 80 char string of hexidecimal. See https://studio.buymeacoffee.com/webhooks>
+COFFEE=<BMC webook secret key. It should be an 80 char string of hexadecimal. See https://studio.buymeacoffee.com/webhooks>
 COFFEEPOT=<BMC shop item e.g. https://buymeacoffee.com/EmceeArsey/e/356685>

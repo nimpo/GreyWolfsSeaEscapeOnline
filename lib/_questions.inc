@@ -107,7 +107,7 @@ The next hint be waitin&apos; where the sky kisses the brine, and the ocean hums
   'But keep yer eyes on the horizon, for the grandest prize lies still ahead! Stay true to the course, and ne&apos;er let doubt be the storm that wrecks ye. Yer next clue be where the stars embrace the deep, and the waves murmur their ancient secrets. <a href="/escape/">Click here</a>, ye daring rogue!'
 ];
 
-$questionsEnd=['You have successfully navigated the narrow straights of this Sea Escape. Now go and nag your leader for the plunder ;-).','I hope ye&apos;ve had a rollickin&apos; good time navigatin&apos; these acursed waters, and, as ye set yer sails for new horizons, keep yer wits sharp and yer compass true, for grander adventures always lie ahead on the high seas! Now hoist that there anchor, and away with ye, and may ye always find a fair wind and following seas!','Fare ye well,', 'Yours in sea-scouting,', 'Cptn. Grey Wolf.','<a href="/escape/">Click here...</a>'];
+$questionsEnd=['You have successfully navigated the narrow straights of this Sea Escape. Now go and nag your leader for the plunder ;-).','I hope ye&apos;ve had a rollickin&apos; good time navigatin&apos; these accursed waters, and, as ye set yer sails for new horizons, keep yer wits sharp and yer compass true, for grander adventures always lie ahead on the high seas! Now hoist that there anchor, and away with ye, and may ye always find a fair wind and following seas!','Fare ye well,', 'Yours in sea-scouting,', 'Cptn. Grey Wolf.','<a href="/escape/">Click here...</a>'];
 
 
 $questionFortune=[ # Good luck we're all counting on you array
@@ -145,7 +145,7 @@ $answerText=[];
 $answerText['Jack']     = 'Well done shipmates! Jack is safe and is recovering in sick bay. You have access to a chart and have instructions. Now turn about and return to harbour.';
 $answerText['Sirens']   = '';
 $answerText['Bearings'] = 'Now you are back, you will need to examine those charts to get your bearings.';
-$answerText['Transits'] = 'You can get a very acurate position line when you line up two visible objects. This is called a &apos;transit&apos;.';
+$answerText['Transits'] = 'You can get a very accurate position line when you line up two visible objects. This is called a &apos;transit&apos;.';
 $answerText['Chess']    = 'Your move! Guide the Queen of the Sea safely to port to unlock your next chest...';
 
 $questionSpecifics=[];

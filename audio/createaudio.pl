@@ -32,7 +32,7 @@ my $groupname = eval { do { local $/; open my $fh, '<', "$coffeedir/users/$usern
 ($groupname) = $groupname =~ /([A-Za-z0-9+\/=]{4,64})/; 
 if ($groupname eq "none") {die "No Group Found $coffeedir/users/$username";}
 
-# Creates a safe (persistant) tmp file like POSIX plan is to move file as required.
+# Creates a safe (persistent) tmp file like POSIX plan is to move file as required.
 sub mktemp {
   my ($fh, $tmpname) = tempfile(SUFFIX => ".wav", UNLINK => 0);
   close ($fh);
@@ -93,7 +93,7 @@ sub LatLngAudio {
 
 # Build First Part of 
 my @cmd=("sox","/tmp/pst.wav","$pathToAudio/pre.wav","|sox -n -r 44100 -p synth 0.2 sine 0"); # First part: pst + Mayday...
-push(@cmd,LatLngAudio("jack",$a));  # += Postition
+push(@cmd,LatLngAudio("jack",$a));  # += Position
 push(@cmd,"$pathToAudio/post.wav"); # += Rest of Jack
 push(@cmd,"/tmp/pst.wav");          # += pst
 my $JackAudio=mktemp();
