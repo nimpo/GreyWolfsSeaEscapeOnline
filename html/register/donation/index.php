@@ -4,6 +4,8 @@ include 'coffee.inc';
 include 'passwd.inc';
 include 'cookie.inc';
 
+$group=getGroupFromGroupCookie();
+
 function newReg($u,$g) {
   global $coffeedir;
   if ( ! is_dir($coffeedir."/users/")) mkdir($coffeedir."/users/", 0750);
