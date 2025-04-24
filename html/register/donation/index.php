@@ -35,6 +35,75 @@ else {
   errormsg(403,'Missing donation info for group:'.$_GET["group"].", expecting Donation ID, got:".$_GET["jgDonationId"]);
 }  
 
+# Check local
+$bgroup=base64_url_encode($group);
+$username=str_replace(' ','',ucwords(str_replace(['-', '_'],' ',preg_replace("/[^A-Za-z0-9 _-]/",'',$group)))); # Make camelCase
+$gexists=file_exists("$coffeedir/users/$username");
+if ($gexists) {
+?>
+    <h2 class="subtitle">Welcome <?= $name ?></h2>
+    <div class="content-container">
+      <div class="scroll-content" id="scrollable">
+        <h3>Welcome to Grey Wolf's Sea Escape <?= $name ?></h3>
+        <p><Please choose a different <span style="text-wrap:nowrap;">group name: <input type="text" name="Group" size="32" id="Group" onchange="checkInput();" onkeyup="checkInput();" /></span><span id="infos" style="color:#ff0000"> (too&nbsp;short)</span></p>
+        <div class="button-container">
+          <button id="redeem" class="fbuttons buttons-no" disabled onclick="handleClick()" value="Redeem">Redeem</button>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-links">
+      <p style="margin-block-start:2px"><a href="/about/">about</a> | <a href="/notes/">leaders-notes</a> | <a href="/leaders/private/">leader-login&nbsp;&#128274;</a> | <a href="/register/">register</a> | <a href="/">home</a></p>
+    </div>
+    <script>
+      function checkInput() {
+        const input = document.getElementById("Group");
+        const value = input.value;
+        const infos = document.getElementById("infos");
+        const button = document.getElementById("redeem");
+
+        if (value.replace(/ +/g,'').length > 4 && value.length < 65 && /^[A-Za-z0-9_. -]+$/.test(value)) { //enable/disable button and change src img /path/file.ext /path/FILE.ext to uppercase s|^(.*)/(.*)\.([^.]*)$|\1/\U\2.\3|
+            button.removeAttribute("disabled")
+            button.classList.remove("buttons-no");
+            button.classList.add("buttons-yes")
+            input.style.backgroundColor = ""; // Reset background color
+            infos.innerHTML = "";
+            infos.style.color = "#000000";
+          return true;
+        } else {
+            button.setAttribute("disabled", "true");
+            button.classList.remove("buttons-yes");
+            button.classList.add("buttons-no");
+        }
+        if (/[^A-Za-z0-9_. -]$/.test(value)) {
+          input.style.backgroundColor = "#ffcccc";
+          infos.innerHTML='please avoid using unreasonable chars:&nbsp;"'+value.replace(/[A-Za-z0-9_. -]/g, '')+'".';
+          infos.style.color="#ff0000";
+        } else if (value.replace(/ +/g,'').length < 5) {
+          input.style.backgroundColor = "";
+          infos.innerHTML="(too&nbsp;short)";
+          infos.style.color="#ff0000";
+        } else if (value.length > 64) {
+          input.style.backgroundColor = "#ffcccc";
+          infos.innerHTML="(too&nbsp;long)";
+          infos.style.color="#ff0000";
+        }
+      }
+      function handleClick(where) {
+        const input = document.getElementById("Group");
+        const value = input.value;
+        if (!checkInput()) { return; }
+        const bgroup = btoa(value);
+        document.cookie = "group="+bgroup+"; max-age=1200; path=/; Secure; SameSite=Lax;";
+        window.location.href = window.location.pathname+"?"+"jgDonationId=<?= $jgDonationId ?>&group="+bgroup;
+      }
+    </script>
+<?php
+  exit();
+}
+
+
+
+
 ##################
 # Use JG Donation ID to check that donation actually exists
 #

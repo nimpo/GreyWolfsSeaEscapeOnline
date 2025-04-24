@@ -3,8 +3,9 @@ include 'buffer.inc';
 include 'coffee.inc';
 include 'passwd.inc';
 include 'cookie.inc';
+include 'b64url.inc';
 
-$group=getGroupFromGroupCookie();
+#$group=getGroupFromGroupCookie();
 
 function newReg($u,$g) {
   global $coffeedir;
@@ -22,7 +23,7 @@ if ( $_SERVER["REQUEST_METHOD"] != "GET" ) errormsg(405,"Only GETS here!");
 # Get donation from query parameters
 #
 $uuid=$_GET["voucher"] ?? "";
-$Group=$_GET["group"] ?? $_COOKIE["group"] ?? "";
+$group=$_GET["group"] ?? getGroupFromGroupCookie() ?? "";
 if ( preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/',$uuid) ) {
   $voucher  = file_get_contents("$coffeedir/UUID=$uuid"); // Should be a JSON file
   $json     = json_decode($voucher,true);
@@ -47,13 +48,17 @@ $expires=$on + 2678400;
 if ($now > $expires) errormsg(402,'Your voucher is no longer valid. Vouchers are valid for a month.');
 
 #################
-if ($group == "") {
+#
+$bgroup=base64_url_encode($group);
+$username=str_replace(' ','',ucwords(str_replace(['-', '_'],' ',preg_replace("/[^A-Za-z0-9 _-]/",'',$group)))); # Make camelCase
+$gexists=file_exists("$coffeedir/users/$username");
+if ($group == "" || $gexists) {
 ?>
     <h2 class="subtitle">Welcome <?= $name ?></h2>
     <div class="content-container">
       <div class="scroll-content" id="scrollable">
         <h3>Welcome to Grey Wolf's Sea Escape <?= $name ?></h3>
-        <p>Please tell us your <span style="text-wrap:nowrap;">group's name: <input type="text" name="Group" size="32" id="Group" onchange="checkInput();" onkeyup="checkInput();" /></span><span id="infos" style="color:#ff0000"> (too&nbsp;short)</span></p>
+        <p><?= ($group != "")?"That group name is already taken.<br />Please choose a different":"Please tell us your" ?> <span style="text-wrap:nowrap;">group name: <input type="text" name="Group" size="32" id="Group" onchange="checkInput();" onkeyup="checkInput();" /></span><span id="infos" style="color:#ff0000"> (too&nbsp;short)</span></p>
         <div class="button-container">
           <button id="redeem" class="fbuttons buttons-no" disabled onclick="handleClick()" value="Redeem">Redeem</button>
         </div>
@@ -101,19 +106,20 @@ if ($group == "") {
         const input = document.getElementById("Group");
         const value = input.value;
         if (!checkInput()) { return; }
-
         const bgroup = btoa(value);
         document.cookie = "group="+bgroup+"; max-age=1200; path=/; Secure; SameSite=Lax;";
-        window.location.href = window.location.pathname+"?"+"voucher=$uuid&group="+value;
+        window.location.href = window.location.pathname+"?"+"voucher=<?= $uuid ?>&group="+value;
       }
     </script>
 <?php
   exit();
 }
+
+rename("$coffeedir/UUID=$uuid","$coffeedir/$bgroup");
 #################
 # Make Names and Passwords
 #
-$username=str_replace(' ','',ucwords(str_replace(['-', '_'],' ',preg_replace("/[^A-Za-z0-9 _-]/",'',$group)))); # Make camelCase
+#$username=str_replace(' ','',ucwords(str_replace(['-', '_'],' ',preg_replace("/[^A-Za-z0-9 _-]/",'',$group)))); # Make camelCase
 $patrols=array("black","yellow","silver","blue","pink","purple");
 $leadername=$username."-leaders";
 $c="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -125,7 +131,7 @@ foreach ($patrols as $patrol) {
   newHTPass("$username-$patrol",$gpasswd,"$coffeedir/.htpasswd");
 }
 newHTPass($leadername,$lpasswd,"$coffeedir/.htleaderspasswd");
-newReg($username,$b64group);
+newReg($username,$bgroup);
 ?>
     <h2 class="subtitle">Welcome</h2>
     <div class="content-container">
