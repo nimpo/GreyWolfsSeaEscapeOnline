@@ -3,6 +3,7 @@ include 'buffer.inc';
 include 'coffee.inc';
 include 'passwd.inc';
 include 'cookie.inc';
+include 'b64url.inc';
 
 ##################
 # How we know Coffee is supplied by a legitimate purveyor of coffee
@@ -23,55 +24,19 @@ function newReg($u,$g) {
   file_put_contents($coffeedir."/users/$u",$g);
 }
 
+function generate_uuid_v4() {
+  $d=random_bytes(16);
+  $d[6]=chr((ord($d[6])&0x0f)|0x40);
+  $d[8]=chr((ord($d[8])&0x3f)|0x80);
+  return vsprintf('%s%s-%s-%s-%s-%s%s%s',str_split(bin2hex($d),4));
+}
+
 if ( $_SERVER["REQUEST_METHOD"] == "GET" ) {
-
-  ##################
-  # The route to this needs to be from a registration click that sets a cookie
-  # Because I cannot get BMC to redirect back here with a query string like I do with JG.
-  #
-  if (getGroupFromGroupCookie() == false) { errormsg(403,"Error missing data. Did you land here without clicking a button?"); }
-  $coffeestatus=checkCoffeePot($b64group); # returns the relevant coffee that arrived in the POST
-  $json = json_decode($coffeestatus,true);
-  $qgroup        = $json['data']['extras']['extra_question']['question_answers'][0] ?? '';
-  $transactionid = $json['data']['transaction_id'] ?? '';
-  $refunded      = $json['data']['refunded'] ?? null;
-  $createdat     = $json['data']['created_at'] ?? 0;
-  $status        = $json['data']['status'] ?? '';
-  $supporter     = $json['data']['supporter_name'] ?? 'Wassaname';
-
-  $now=time();
-
-  ################
-  # check the check
-  # Make sure waiter hasn't collected it back
-  #
-  if ( $refunded === true ) errormsg(402,"Can't provide service as this transaction has been refunded!");
-  if ( $transactionid == '' ) errormsg(402,"Buymeacoffee didn't send all the infos"); 
-  if ( $createdat+(86400*31) < $now ) errormsg(402,"This is an old coffee and it's gone cold!");
-
-  $username=str_replace(' ','',ucwords(str_replace(['-', '_'],' ',preg_replace("/[^A-Za-z0-9 _-]/",'',$group)))); # Make Camelcase
-  $patrols=array("black","yellow","silver","blue","pink","purple");
-  $leadername=$username."-leaders";
-  $c="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  $gpasswd="";
-  $lpasswd="";
-  while (strlen($gpasswd) < 5) { $gpasswd.=$c[random_int(0,61)]; }
-  while (strlen($lpasswd) < 8) { $lpasswd.=$c[random_int(0,61)]; }
-  foreach ($patrols as $patrol) {
-    newHTPass("$username-$patrol",$gpasswd,"$coffeedir/.htpasswd");
-  }
-  newHTPass($leadername,$lpasswd,"$coffeedir/.htleaderspasswd");
-  newReg($username,$b64group);
 ?>
-    <h2 class="subtitle">Welcome <?= $group ?></h2>
+  <h2 class="subtitle">Thank you</h2>
     <div class="content-container">
       <div class="scroll-content" id="scrollable">
-        <p>Thank you kindly! Just setting up your group access...</p>
-        <p>The usernames for each patrol/team will be:</p>
-        <ol><?php echo implode(array_map(fn($v) => "<li>&quot;$username-$v&quot;</li>", $patrols));?></ol>
-        <p>The password for each will be &quot;<?= $gpasswd ?>&quot;. This will give your scouts access to the tasks.</p>
-        <p>Your leaders username will be &quot;<?= $leadername ?>&quot;.
-        The corresponding password will be &quot;<?= $lpasswd ?>&quot;. This will give you access to the answers pages. It will also let you know how much longer your access will last and will allow you to reset your two passwords.</p>
+        <p>Thank you kindly! If your purchase of a coffee voucher was successful then you should find a link sent to your email address. Follow this to activate access for your group. If you have not received an email soon then please contact me: <span aria-label="This email address is obfuscated to prevent abuse. Please obtain my email address by visual methods or by other out-of-band means." style="font-family: ScrambleN;">&lt;89;.$A@;:*&lt;#@:AB4D:FAB4:.A,+.B9</span> with a copy of your receipt email from buymeacoffee.com.</p>
       </div>
     </div>
     <button id="printButton" onclick="window.print()">Print Page</button>
@@ -129,31 +94,159 @@ if ( ($json=json_decode($PostData,true)) === null ) {
   exit;
 }
 
-################
-# Extract the group name for which the coffee is being donated
-#
-$qgroup = $json['data']['extras']['extra_question']['question_answers'][0] ?? 'NoSuchGroup';
-$b64group = base64_encode($qgroup);
+# Parse and check
+$name     = $json['payer_name'] ?? '';
+$email    = $json['payer_email'] ?? '';
+$amount   = $json['purchase_amount'] ?? '';
+$currency = $json['purchase_currency'] ?? '';
+$on       = $json['purchased_on'] ?? ''; // "2025-01-12 09:52:29"
+$on = strtotime($on);
+$reward   = $json['extra']['reward_title'] ?? '' ; // "Grey Wolf's SeaEscape"
 
-################
-# Check the question was answered
-#
-if ( $qgroup == 'NoSuchGroup' ) {
-  date_default_timezone_set('UTC');
-  $date=date("Y-m-d\TH:i:s\Z");
-  file_put_contents($coffeedir."/NoSuchGroup-".$date, $PostData);
-  http_response_code(400);
-  echo "Question not answered by client";
-  exit;
-}
+if ( $name === "" ) errormsg(403,'Voucher missing information.');
+if ( ! preg_match('/[^@]+@[A-Za-z0-9_-]+\.[A-Za-z0-9_.-]+$/',$email)) errormsg(403,'No email how can I possibly match this up with a client, given that BMC refuses to allow tokens to be passed in any robust way?');
+if ( $reward != "Grey Wolf's SeaEscape" ) errormsg(403,"Voucher for something else: '$reward'");
 
-################
-# If we got here, save the coffee on the system
-#
-if (file_put_contents($coffeedir."/".$b64group, $PostData)) {
-  echo "Item Recorded";
+now=time();
+$expires=$on + 2678400;
+if ($now > $expires) errormsg(402,'Voucher is no longer valid. Vouchers are valid for a month.');
+
+# Gen UUID
+$uuid=generate_uuid_v4();
+if (file_put_contents("$coffeedir/UUID=$uuid", $PostData)) { // 'UUID=' means no b64 clash
+  echo "One coffee coming right up. User client to check their email.";
 } else {
   http_response_code(500);
-  echo "Failed to save data.";
+  errormsg(403,'Failed to record coffee event.');
 }
+
+function plaintextToHtmlParagraphs($text) {
+  $text = preg_replace("/\r\n|\r/", "\n", $text);
+  $paragraphs = preg_split("/\n{2,}/", trim($text));
+  $html = '';
+  foreach ($paragraphs as $p) {
+    $escaped = htmlspecialchars($p);
+    $linked = preg_replace_callback( '/(https?:\/\/[^\s<]+)/i', function ($matches) { $url = $matches[1]; return '<a href="' . $url . '">' . $url . '</a>'; }, $escaped);
+    $linked = nl2br($linked, false);
+    $html .= "<p>$linked</p>\n";
+  }
+  return $html;
+}
+
+$cid1="topleft";
+$cid2="logo";
+$cid3="bottomright";
+
+$assets=realpath($_SERVER['DOCUMENT_ROOT'])."/assets";
+
+$img1="$assets/circle-top-left-clip.png";
+$img2="$assets/logo.png";
+$img3="$assets/circle-bottom-right-clip.png";
+
+$imageData1 = chunk_split(base64_encode(file_get_contents($img1)));
+$imageData2 = chunk_split(base64_encode(file_get_contents($img2)));
+$imageData3 = chunk_split(base64_encode(file_get_contents($img3)));
+
+$to = $email;
+$subject = "Grey Wolf's Sea Escape Access Voucher";
+$boundary = uniqid('np');
+
+$plaintext=<<<EOF
+Dear $name,
+
+Thank you for buying me a coffee. Your access to the Sea Escape will be created when you follow the voucher link below.
+
+https://seascouts.co.uk/register/coffee/redeem?voucher=$uuid
+
+Vouchers are redeemable for up to 1 month from donation. Access to the Sea Escape will last 1 month from when you redeem the voucher.
+
+On redemption the site will autpmagically activate your account and you will be provided with a password to log-in. Don't lose the leader password! You will then need to set the first question up via the leaders' private interface.
+
+I hope you enjoy your experience. If you have any issues, you can find my email address in the about section or better still raise an issue in the github repository.
+
+Best
+
+Mike Jones
+
+EOF;
+
+$htmltext = plaintextToHtmlParagraphs($plaintext);
+
+$headers = "MIME-Version: 1.0\r\n";
+$headers .= "From: Grey Wolf <grey.wolf@seascouts.co.uk>\r\n";
+$headers .= "Content-Type: multipart/related; boundary=\"$boundary\"\r\n";
+
+$body  = "--$boundary\r\n";
+$body .= "Content-Type: multipart/alternative; boundary=\"alt-$boundary\"\r\n\r\n";
+$body .= "--alt-$boundary\r\n";
+$body .= "Content-Type: text/plain; charset=UTF-8\r\n\r\n";
+$body .= $plaintext . "\r\n";
+$body .= "--alt-$boundary\r\n";
+$body .= "Content-Type: text/html; charset=UTF-8\r\n\r\n";
+
+$html=<<<EOF
+<!DOCTYPE html>
+<html>
+  <body style="margin:0; padding:0;">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff;">
+      <tr>
+        <td align="center">
+          <table width="600" cellpadding="0" cellspacing="0" border="0">
+            <tr>
+              <td align="left" valign="top" style="padding: 10px;">
+                <img src="cid:$cid1" alt="Left Image" style="display:block;" width="100" height="100">
+              </td>
+              <td style="width:100%;" align="center"><div style="margin-left:20px; margin-right:20px; font-family:Arial, sans-serif; font-size:20px; font-weight: bold; line-height:1.5; color:#333333;">Grey Wolf's Sea Escape</div></td>
+              <td align="right" valign="top" style="padding: 10px;">
+                <img src="cid:$cid2" alt="Right Image" style="display:block;" width="100" height="100">
+              </td>
+            </tr>
+            <tr>
+              <td colspan="3" style="padding: 20px;">
+                <div style="margin-left:20px; margin-right:20px; font-family:Arial, sans-serif; font-size:16px; line-height:1.5; color:#333333;">
+$htmltext
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2"></td>
+              <td align="right" style="padding: 10px;">
+                <img src="cid:$cid3" alt="Footer Image" style="display:block;" width="100" height="100">
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
+EOF;
+$body .= $html . "\r\n";
+$body .= "--alt-$boundary--\r\n";
+
+$body .= "--$boundary\r\n";
+$body .= "Content-Type: image/png; name=\"circle-top-left-clip.png\"\r\n";
+$body .= "Content-Transfer-Encoding: base64\r\n";
+$body .= "Content-ID: <$cid1>\r\n";
+$body .= "Content-Disposition: inline; filename=\"circle-top-left-clip.png\"\r\n\r\n";
+$body .= $imageData1 . "\r\n";
+
+$body .= "--$boundary\r\n";
+$body .= "Content-Type: image/png; name=\"logo.png\"\r\n";
+$body .= "Content-Transfer-Encoding: base64\r\n";
+$body .= "Content-ID: <$cid2>\r\n";
+$body .= "Content-Disposition: inline; filename=\"logo.png\"\r\n\r\n";
+$body .= $imageData2 . "\r\n";
+
+$body .= "--$boundary\r\n";
+$body .= "Content-Type: image/png; name=\"circle-bottom-right-clip.png\"\r\n";
+$body .= "Content-Transfer-Encoding: base64\r\n";
+$body .= "Content-ID: <$cid3>\r\n";
+$body .= "Content-Disposition: inline; filename=\"circle-bottom-right-clip.png\"\r\n\r\n";
+$body .= $imageData3 . "\r\n";
+
+$body .= "--$boundary--";
+
+if ( mail($to, $subject, $body, $headers) ) { print("Email Sent"); }
+else { errormsg(500,"The email system didn't like to send that email!"); }
 ?>
