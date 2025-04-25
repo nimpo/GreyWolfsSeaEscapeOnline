@@ -36,6 +36,11 @@ ob_start();
     <link rel="icon" href="/assets/favicon/favicon.svg" sizes="any" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/assets/favicon/apple-touch-icon.png"/>
     <link rel="manifest" href="/assets/favicon/site.webmanifest" />
+    <meta property="og:title" content="Grey Wolf's Sea Escape" />
+    <meta property="og:description" content="An escape room with a twist. The name o' the game be navigation—charts, compasses, rules of the high sea and a fair bit o' cunning will be yer best mates as ye work to unravel riddles, dodge dangers, and outwit the sea's many mysteries." />
+    <meta property="og:image" content="<?= 'https://'.$_SERVER['HTTP_HOST'].'/assets/favicon/circle-bottom-right.png' ?>" />
+    <meta property="og:url" content="<?= 'https://'.$_SERVER['HTTP_HOST'].'/' ?>" />
+    <meta property="og:type" content="website" />
   </head>
   <body onload="scrollability()">
     <img class="circle-top-left" src="/assets/circle-top-left.svg" alt="Circle with coloured stripes decoration in Scout Brand colours."/>
