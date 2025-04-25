@@ -22,8 +22,14 @@ $bounds->len=(float)$_GET['len'] ?? -1;
 if ($bounds->lat > -90 && $bounds->lat < 90 && 
     $bounds->lng >= -180 && $bounds->lng <= 180 &&
     $bounds->len > 0.1 && $bounds->len <= 100 ) {
-  file_put_contents($coffeedir."/bounds/$fname", json_encode($bounds));
-  header("Location: https://$host/leaders/private/placejack/audio/");
+  if ( file_put_contents($coffeedir."/bounds/$fname", json_encode($bounds)) ) {
+    header("Location: https://$host/leaders/private/placejack/audio/");
+  }
+  else { 
+    http_response_code(503);
+    echo "Failed to write $fname";
+    exit;
+  }
 }
 else {
   http_response_code(503);
