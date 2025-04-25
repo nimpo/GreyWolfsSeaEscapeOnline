@@ -3,8 +3,9 @@ include 'buffer.inc';
 include 'coffee.inc';
 include 'passwd.inc';
 include 'cookie.inc';
+include 'b64url.inc';
 
-$group=getGroupFromGroupCookie();
+#$group=getGroupFromGroupCookie();
 
 function newReg($u,$g) {
   global $coffeedir;
@@ -21,31 +22,43 @@ if ( $_SERVER["REQUEST_METHOD"] != "GET" ) errormsg(405,"Only GETS here!");
 #################
 # Get donation from query parameters
 #
-$jgDonationID='';
-$dgroup='';
-if ( preg_match('/^[0-9]+$/',$_GET["jgDonationId"]) && preg_match('/^([A-Za-z0-9\/+]{4})*([A-Za-z0-9\/+]{4}|[A-Za-z0-9\/+]{3}=|[A-Za-z0-9\/+]{2}==)$/',$_GET["group"]) ) { 
-  $jgDonationID=$_GET["jgDonationId"]; // something JG sets and identifies the transaction
-  $b64group=$_GET["group"]; // something I set in the url
-  $dgroup=base64_decode($b64group);
-  if ( $dgroup !== $group ) {
-    errormsg(403,'Group name was changed between leaving this site and returning; did your cookie expire or did someone fiddle with the URL. Whatever, '.$_GET["group"].', is not a valid name');
-  }
+$uuid=$_GET["voucher"] ?? "";
+$group=$_GET["group"] ?? getGroupFromGroupCookie() ?? "";
+if ( preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/',$uuid) ) {
+  $voucher  = file_get_contents("$coffeedir/UUID=$uuid"); // Should be a JSON file
+  $json     = json_decode($voucher,true);
+  $name     = $json['payer_name'] ?? '';
+  $email    = $json['payer_email'] ?? '';
+  $amount   = $json['purchase_amount'] ?? '';
+  $currency = $json['purchase_currency'] ?? '';
+  $on       = $json['purchased_on'] ?? ''; // "2025-01-12 09:52:29"
+  $on = strtotime($on);
+  $reward   = $json['extra']['reward_title'] ?? '' ; // "Grey Wolf's SeaEscape"
 }
 else {
-  errormsg(403,'Missing donation info for group:'.$_GET["group"].", expecting Donation ID, got:".$_GET["jgDonationId"]);
-}  
+  errormsg(403,'Missing voucher ID:');
+}
 
-# Check local
+if ( $voucher === false ) errormsg(500,'No such voucher '. $voucher);
+if ( $name === "" ) errormsg(500,'Found a voucher but it is missing information.');
+if ( $reward != "Grey Wolf's SeaEscape" ) errormsg(403,"BMC says this voucher was for something else: '$reward'");
+
+$now=time();
+$expires=$on + 2678400;
+if ($now > $expires) errormsg(402,'Your voucher is no longer valid. Vouchers are valid for a month.');
+
+#################
+#
 $bgroup=base64_url_encode($group);
 $username=str_replace(' ','',ucwords(str_replace(['-', '_'],' ',preg_replace("/[^A-Za-z0-9 _-]/",'',$group)))); # Make camelCase
 $gexists=file_exists("$coffeedir/users/$username");
-if ($gexists) {
+if ($group == "" || $gexists) {
 ?>
     <h2 class="subtitle">Welcome <?= $name ?></h2>
     <div class="content-container">
       <div class="scroll-content" id="scrollable">
         <h3>Welcome to Grey Wolf's Sea Escape <?= $name ?></h3>
-        <p><Please choose a different <span style="text-wrap:nowrap;">group name: <input type="text" name="Group" size="32" id="Group" onchange="checkInput();" onkeyup="checkInput();" /></span><span id="infos" style="color:#ff0000"> (too&nbsp;short)</span></p>
+        <p><?= ($group != "")?"That group name is already taken.<br />Please choose a different":"Please tell us your" ?> <span style="text-wrap:nowrap;">group name: <input type="text" name="Group" size="32" id="Group" onchange="checkInput();" onkeyup="checkInput();" /></span><span id="infos" style="color:#ff0000"> (too&nbsp;short)</span></p>
         <div class="button-container">
           <button id="redeem" class="fbuttons buttons-no" disabled onclick="handleClick()" value="Redeem">Redeem</button>
         </div>
@@ -88,54 +101,25 @@ if ($gexists) {
           infos.style.color="#ff0000";
         }
       }
+
       function handleClick(where) {
         const input = document.getElementById("Group");
         const value = input.value;
         if (!checkInput()) { return; }
         const bgroup = btoa(value);
         document.cookie = "group="+bgroup+"; max-age=1200; path=/; Secure; SameSite=Lax;";
-        window.location.href = window.location.pathname+"?"+"jgDonationId=<?= $jgDonationId ?>&group="+bgroup;
+        window.location.href = window.location.pathname+"?"+"voucher=<?= $uuid ?>&group="+value;
       }
     </script>
 <?php
   exit();
 }
 
-
-
-
-##################
-# Use JG Donation ID to check that donation actually exists
-#
-$options = [ "http" => [ "method"  => "GET", "header" => "Accept: application/json\r\n" ], "ssl" => [ "verify_peer" => true, "verify_peer_name" => true ] ];
-
-$url="https://api.justgiving.com/57d1716b/v1/donation/$jgDonationID";
-if ( ( $donation = file_get_contents($url, false,stream_context_create($options)) ) !== '' ) {
-  $json = json_decode($donation,true);
-  $transactionid = $json['id'] ?? '';
-  $createdat = $json['donationDate'] ?? '';
-  if (preg_match('/\/Date\((\d+)(?:[+-]\d{4})?\)\//', $createdat, $matches)) { $createdat = (int)$matches[1]/1000; }
-  $status=$json['status'] ?? '';
-  $supporter = $json['donorDisplayName'] ?? 'Wassaname';
-  file_put_contents($coffeedir."/".$b64group, $donation);
-}
-
-
-#################
-# Make sure donation has been accepted.
-#
-$now=time();
-if ( $status !== 'Accepted' )       errormsg(402,"Can't provide service as this transaction has not been Accepted according to JustGiving!");
-if ($transactionid == '' )          errormsg(402,"Just Giving didn't send you here with your transaction ID"); 
-if ( $createdat+(86400*31) < $now ) errormsg(402,"Stale donation. Please place another 200 pence into the slot.");
-if ( ! touch ("$coffeedir/.test") ) errormsg(500,"Cannot set access."); 
-unlink("$coffeedir/.test");
-
-
+rename("$coffeedir/UUID=$uuid","$coffeedir/$bgroup");
 #################
 # Make Names and Passwords
 #
-$username=str_replace(' ','',ucwords(str_replace(['-', '_'],' ',preg_replace("/[^A-Za-z0-9 _-]/",'',$group)))); # Make camelCase
+#$username=str_replace(' ','',ucwords(str_replace(['-', '_'],' ',preg_replace("/[^A-Za-z0-9 _-]/",'',$group)))); # Make camelCase
 $patrols=array("black","yellow","silver","blue","pink","purple");
 $leadername=$username."-leaders";
 $c="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -147,7 +131,7 @@ foreach ($patrols as $patrol) {
   newHTPass("$username-$patrol",$gpasswd,"$coffeedir/.htpasswd");
 }
 newHTPass($leadername,$lpasswd,"$coffeedir/.htleaderspasswd");
-newReg($username,$b64group);
+newReg($username,$bgroup);
 ?>
     <h2 class="subtitle">Welcome</h2>
     <div class="content-container">
