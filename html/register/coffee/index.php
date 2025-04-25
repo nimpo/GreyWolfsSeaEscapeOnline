@@ -97,8 +97,8 @@ if ( ($json=json_decode($PostData,true)) === null ) {
 # Parse and check
 $name     = $json['data']['supporter_name'] ?? '';
 $email    = $json['data']['supporter_email'] ?? '';
-$amount   = $json['data']['extras']['ammount'] ?? '';
-$currency = $json['data']['extras']['USD'] ?? '';
+$amount   = $json['data']['extras'][0]['amount'] ?? -1;
+$currency = $json['data']['extras'][0]['currency'] ?? '';
 $on       = $json['data']['created_at'] ?? ''; // "2025-01-12 09:52:29"
 #$on = strtotime($on);
 $reward   = $json['data']['extras'][0]['title'] ?? '' ; // "Grey Wolf's SeaEscape"
@@ -151,6 +151,7 @@ $to = $email;
 $subject = "Grey Wolf's Sea Escape Access Voucher";
 $boundary = uniqid('np');
 
+if ($amount > 0) {
 $plaintext=<<<EOF
 Dear $name,
 
@@ -166,9 +167,29 @@ I hope you enjoy your experience. If you have any issues, you can find my email 
 
 Best
 
-Mike Jones
+Grey Wolf
 
 EOF;
+} else {
+$plaintext=<<<EOF
+Dear $name,
+
+Thank you for your interest in Grey Wolf's Sea Escape. Automatic access to the system requires a donation. You have chosen to apply for free access which requires manual intervention.
+
+You will need to contact me and let me know your UUID and reason why I should allow you free passage. Further instructions via your activation link.
+
+https://seascouts.co.uk/register/coffee/redeem?voucher=$uuid
+
+NB unused vouchers and activations links are cleared after one month.
+
+I look forward to making your aquaintance.
+Best
+
+Grey Wolf
+
+EOF;
+
+}
 
 $htmltext = plaintextToHtmlParagraphs($plaintext);
 

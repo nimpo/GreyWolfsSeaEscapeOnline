@@ -29,8 +29,8 @@ if ( preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-
   $json     = json_decode($voucher,true);
   $name     = $json['data']['supporter_name'] ?? '';
   $email    = $json['data']['supporter_email'] ?? '';
-  $amount   = $json['data']['extras']['ammount'] ?? '';
-  $currency = $json['data']['extras']['USD'] ?? '';
+  $amount   = $json['data']['extras'][0]['amount'] ?? -1;
+  $currency = $json['data']['extras'][0]['currency'] ?? '';
   $on       = $json['data']['created_at'] ?? ''; // "2025-01-12 09:52:29"
   #$on = strtotime($on);
   $reward   = $json['data']['extras'][0]['title'] ?? '' ; // "Grey Wolf's SeaEscape"
@@ -46,6 +46,22 @@ if ( $reward != "Grey Wolf's SeaEscape" ) errormsg(403,"BMC says this voucher wa
 $now=time();
 $expires=$on + 2678400;
 if ($now > $expires) errormsg(402,'Your voucher is no longer valid. Vouchers are valid for a month.');
+
+if ($amount == 0) {
+?>
+    <h2 class="subtitle">Welcome <?= $name ?></h2>
+    <div class="content-container">
+      <div class="scroll-content" id="scrollable">
+        <h3>About free access.</h3>
+        <p>Your voucher is valid but carries no value. Should you wish to make use of this Sea Escape for free under the terms described in <a href="/about/#complementary">the about pages</a>, please send an email to <span aria-label="This email address is obfuscated to prevent abuse. Please obtain my email address by visual methods or by other out-of-band means." style="font-family: ScrambleN;">&lt;89;.$A@;:*&lt;#@:AB4D:FAB4:.A,+.B9</span>. Please include your case for free access and please quote your voucher code: <?= $uuid ?>.</p>
+      </div>
+    </div>
+    <div class="bottom-links">
+      <p style="margin-block-start:2px"><a href="/about/">about</a> | <a href="/notes/">leaders-notes</a> | <a href="/leaders/private/">leader-login&nbsp;&#128274;</a> | <a href="/register/">register</a> | <a href="/">home</a></p>
+    </div>
+<?php
+exit;
+}
 
 #################
 #
