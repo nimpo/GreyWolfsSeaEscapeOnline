@@ -21,7 +21,7 @@ close ($tfh);
 # Get groupname from username (the b64 encoded one)
 my ($username,$team) = $ENV{'REMOTE_USER'} =~ /^([A-Za-z0-9]+)(?:-(leaders|black|yellow|silver|blue|pink|purple))$/; # Precise because of taint
 my $groupname = eval { do { local $/; open my $fh, '<', "$coffeedir/users/$username" or die $!; <$fh> } } // "none";
-($groupname) = $groupname =~ /([A-Za-z0-9+\/=]{4,64})/; 
+($groupname) = $groupname =~ /([A-Za-z0-9._-]{4,64})/; 
 if ($groupname eq "none") {die "No Group Found $coffeedir/users/$username";}
 
 # Creates a safe (persistent) tmp file like POSIX plan is to move file as required.
