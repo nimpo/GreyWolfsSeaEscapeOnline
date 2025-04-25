@@ -80,7 +80,7 @@ else {
 }
 
 my ($a) = $jack =~ /^([0-9NESW°'".]*)/u;
-if ( $a eq "" ) { die "Badly formatted Position $jack -> $a"; }
+if ( $a eq "" ) { die "Badly formatted Position $jack -> '$a' $boundsjson is from $groupname.json"; }
 ##################################
 # Start Audio Processing
 #
