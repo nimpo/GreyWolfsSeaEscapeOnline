@@ -27,13 +27,13 @@ $group=$_GET["group"] ?? getGroupFromGroupCookie() ?? "";
 if ( preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/',$uuid) ) {
   $voucher  = file_get_contents("$coffeedir/UUID=$uuid"); // Should be a JSON file
   $json     = json_decode($voucher,true);
-  $name     = $json['payer_name'] ?? '';
-  $email    = $json['payer_email'] ?? '';
-  $amount   = $json['purchase_amount'] ?? '';
-  $currency = $json['purchase_currency'] ?? '';
-  $on       = $json['purchased_on'] ?? ''; // "2025-01-12 09:52:29"
-  $on = strtotime($on);
-  $reward   = $json['extra']['reward_title'] ?? '' ; // "Grey Wolf's SeaEscape"
+  $name     = $json['data']['supporter_name'] ?? '';
+  $email    = $json['data']['supporter_email'] ?? '';
+  $amount   = $json['data']['extras']['ammount'] ?? '';
+  $currency = $json['data']['extras']['USD'] ?? '';
+  $on       = $json['data']['created_at'] ?? ''; // "2025-01-12 09:52:29"
+  #$on = strtotime($on);
+  $reward   = $json['data']['extras'][0]['title'] ?? '' ; // "Grey Wolf's SeaEscape"
 }
 else {
   errormsg(403,'Missing voucher ID:');
