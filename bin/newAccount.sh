@@ -17,7 +17,7 @@ echo -n "$SGROUP" |grep -qv '.....' && echo "Group Name too short" >&2 && exit 1
 USERNAME=`echo -n "$SGROUP" |tr '_-' ' ' | sed -e 's/\(^\| \)\([a-z]\)/\U\2/g' -e 's/ //g'`
 
 # Base64 of Group
-B64GROUP=`echo -n "$GROUP" |base64 -w0`
+B64GROUP=`echo -n "$GROUP" |base64 -w0|tr '+=/' '-._'`
 
 # Get Script location and determine coffeedir
 THISSCRIPT=`readlink -f $0`
