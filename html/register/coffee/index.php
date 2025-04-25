@@ -107,7 +107,7 @@ if ( $name === "" ) errormsg(403,'Voucher missing information.');
 if ( ! preg_match('/[^@]+@[A-Za-z0-9_-]+\.[A-Za-z0-9_.-]+$/',$email)) errormsg(403,'No email how can I possibly match this up with a client, given that BMC refuses to allow tokens to be passed in any robust way?');
 if ( $reward != "Grey Wolf's SeaEscape" ) errormsg(403,"Voucher for something else: '$reward'");
 
-now=time();
+$now=time();
 $expires=$on + 2678400;
 if ($now > $expires) errormsg(402,'Voucher is no longer valid. Vouchers are valid for a month.');
 
