@@ -117,7 +117,7 @@ if ( ( $donation = file_get_contents($url, false,stream_context_create($options)
   if (preg_match('/\/Date\((\d+)(?:[+-]\d{4})?\)\//', $createdat, $matches)) { $createdat = (int)$matches[1]/1000; }
   $status=$json['status'] ?? '';
   $supporter = $json['donorDisplayName'] ?? 'Wassaname';
-  file_put_contents($coffeedir."/".$b64group, $donation);
+  file_put_contents($coffeedir."/".$bgroup, $donation);
 }
 
 
@@ -147,7 +147,7 @@ foreach ($patrols as $patrol) {
   newHTPass("$username-$patrol",$gpasswd,"$coffeedir/.htpasswd");
 }
 newHTPass($leadername,$lpasswd,"$coffeedir/.htleaderspasswd");
-newReg($username,$b64group);
+newReg($username,$bgroup);
 ?>
     <h2 class="subtitle">Welcome</h2>
     <div class="content-container">
