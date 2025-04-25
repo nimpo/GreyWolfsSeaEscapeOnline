@@ -101,7 +101,7 @@ $amount   = $json['data']['extras']['ammount'] ?? '';
 $currency = $json['data']['extras']['USD'] ?? '';
 $on       = $json['data']['created_at'] ?? ''; // "2025-01-12 09:52:29"
 #$on = strtotime($on);
-$reward   = $json['data']['extras']['title'] ?? '' ; // "Grey Wolf's SeaEscape"
+$reward   = $json['data']['extras'][0]['title'] ?? '' ; // "Grey Wolf's SeaEscape"
 
 if ( $name === "" ) errormsg(403,'Voucher missing information.');
 if ( ! preg_match('/[^@]+@[A-Za-z0-9_-]+\.[A-Za-z0-9_.-]+$/',$email)) errormsg(403,'No email how can I possibly match this up with a client, given that BMC refuses to allow tokens to be passed in any robust way?');
