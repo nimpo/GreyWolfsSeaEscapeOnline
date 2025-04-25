@@ -182,7 +182,7 @@ https://seascouts.co.uk/register/coffee/redeem?voucher=$uuid
 
 NB unused vouchers and activations links are cleared after one month.
 
-I look forward to making your aquaintance.
+I look forward to making your acquaintance.
 Best
 
 Grey Wolf
