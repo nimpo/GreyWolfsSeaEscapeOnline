@@ -8,6 +8,7 @@
           <li><a href="Chart.pdf">PDF of chart of North Chorltonden (A3)</a></li>
           <li><a href="private/Chart-Bearing-Answers.pdf">... with Answers to Bearings questions marked on.</a>&nbsp;&#128274;</li>
           <li><a href="private/Chart-Transit-Answers.pdf">... with Answers to Transits questions marked on.</a>&nbsp;&#128274;</li>
+          <li><a href="private/ChessAnswers.pdf">Answers to Queen of the Seas questions.</a>&nbsp;&#128274;</li>
           <li><a href="Plotter.pdf">PDF Plotter template</a> to print on acetates.</li>
           <li><a href="Key.pdf">PDF of Key</a> for use with chart.</a></li>
           <li><a href="/escape/audio/">Link to Jack's distress message</a>&nbsp;&#128274;</a>
