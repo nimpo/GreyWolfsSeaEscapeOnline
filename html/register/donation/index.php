@@ -3,7 +3,7 @@ include 'buffer.inc';
 include 'coffee.inc';
 include 'passwd.inc';
 include 'cookie.inc';
-
+include 'b64url.inc';
 $group=getGroupFromGroupCookie();
 
 function newReg($u,$g) {
