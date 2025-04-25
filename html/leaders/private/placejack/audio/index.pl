@@ -21,6 +21,7 @@ close ($tfh);
 # Get groupname from username (the b64 encoded one)
 my ($username,$team) = $ENV{'REMOTE_USER'} =~ /^([A-Za-z0-9]+)(?:-(leaders|black|yellow|silver|blue|pink|purple))$/; # Precise because of taint
 my $groupname = eval { do { local $/; open my $fh, '<', "$coffeedir/users/$username" or die $!; <$fh> } } // "none";
+my $og=$groupname;
 ($groupname) = $groupname =~ /([A-Za-z0-9._-]{4,64})/; 
 if ($groupname eq "none") {die "No Group Found $coffeedir/users/$username";}
 
@@ -80,7 +81,7 @@ else {
 }
 
 my ($a) = $jack =~ /^([0-9NESW°'".]*)/u;
-if ( $a eq "" ) { die "Badly formatted Position $jack -> '$a' $boundsjson is from $groupname.json"; }
+if ( $a eq "" ) { die "Badly formatted Position $jack -> '$a' $boundsjson is from $groupname.json name from file was '$og'"; }
 ##################################
 # Start Audio Processing
 #
