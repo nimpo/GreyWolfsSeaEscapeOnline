@@ -95,13 +95,13 @@ if ( ($json=json_decode($PostData,true)) === null ) {
 }
 
 # Parse and check
-$name     = $json['payer_name'] ?? '';
-$email    = $json['payer_email'] ?? '';
-$amount   = $json['purchase_amount'] ?? '';
-$currency = $json['purchase_currency'] ?? '';
-$on       = $json['purchased_on'] ?? ''; // "2025-01-12 09:52:29"
-$on = strtotime($on);
-$reward   = $json['extra']['reward_title'] ?? '' ; // "Grey Wolf's SeaEscape"
+$name     = $json['data']['supporter_name'] ?? '';
+$email    = $json['data']['supporter_email'] ?? '';
+$amount   = $json['data']['extras']['ammount'] ?? '';
+$currency = $json['data']['extras']['USD'] ?? '';
+$on       = $json['data']['created_at'] ?? ''; // "2025-01-12 09:52:29"
+#$on = strtotime($on);
+$reward   = $json['data']['extra']['title'] ?? '' ; // "Grey Wolf's SeaEscape"
 
 if ( $name === "" ) errormsg(403,'Voucher missing information.');
 if ( ! preg_match('/[^@]+@[A-Za-z0-9_-]+\.[A-Za-z0-9_.-]+$/',$email)) errormsg(403,'No email how can I possibly match this up with a client, given that BMC refuses to allow tokens to be passed in any robust way?');
