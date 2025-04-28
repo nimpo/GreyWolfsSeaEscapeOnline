@@ -1,6 +1,6 @@
 {
-    "name": "Your website name",
-    "short_name": "A shorter version of your website name",
+    "name": "Grey Wolf's Sea Escape",
+    "short_name": "Sea Escape",
     "icons": [
         {
             "src": "/assets/favicon/android-chrome-192x192.png",
@@ -15,5 +15,7 @@
     ],
     "theme_color": "#000000",
     "background_color": "#ffffff",
-    "display": "standalone"
+    "display": "fullscreen",
+    "start_url": "/",
+    "orientation": "landscape"
 }
