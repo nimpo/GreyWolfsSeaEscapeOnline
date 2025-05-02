@@ -1,7 +1,5 @@
 <?php
 
-include('spam.inc');
-
 ##################
 # Buffer a nice html responses
 #
@@ -54,4 +52,5 @@ ob_start();
 $foot="</body></html>";
 register_shutdown_function(function() { global $foot; echo $foot; ob_end_flush(); });
 }
+include('spam.inc');
 ?>
