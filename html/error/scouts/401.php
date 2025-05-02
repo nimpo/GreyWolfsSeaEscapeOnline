@@ -14,3 +14,6 @@ http_response_code(401);
     <div class="bottom-links">
       <p style="margin-block-start:2px"><a href="/">home</a></p>
     </div>
+<?php
+  exit;
+?>

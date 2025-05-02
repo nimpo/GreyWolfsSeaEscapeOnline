@@ -1,5 +1,7 @@
 <?php
 
+include('spam.inc');
+
 ##################
 # Buffer a nice html responses
 #
