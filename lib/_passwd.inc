@@ -13,7 +13,8 @@ function newHTPass($u,$p,$f) { # does no checking; Takes  username, password, .h
   for($i=0;$i<1000;$i++){$d=pack("H*",md5((($i%2)?$p:$d).(($i%3)?$s:"").(($i%7)?$p:"").(($i%2)?$d:$p)));}
   $l=$u.':$apr1$'.$s.'$'.strtr(strrev(substr(base64_encode("\0\0".implode('',array_map(fn($i)=>$d[$i],[11,4,10,5,3,9,15,2,8,14,1,7,13,0,6,12]))),2)),$o,$n);
   $r=@file_get_contents($f);
-  $w=preg_replace("/^$u:.*$/m",$l,$r);
+  $ll=str_replace('$', '\$', $l);
+  $w=preg_replace("/^$u:.*/s","$ll",$r);
   if ($w == $r) {$w.="$l\n";}
   file_put_contents($f, $w, LOCK_EX);
   return $f;
