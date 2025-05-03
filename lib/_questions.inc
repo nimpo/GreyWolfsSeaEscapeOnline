@@ -186,7 +186,7 @@ $questionSpecifics['purple']['Chess']    = 'Think Chess; Think QUEEN of the Seas
 
 $questionSpecifics['pink']=[];
 $questionSpecifics['pink']['Jack']     = 'Rescue Jack';
-$questionSpecifics['pink']['Sirens']   = 'Remember you are team number 1.';
+$questionSpecifics['pink']['Sirens']   = 'Remember you are team number 6.';
 $questionSpecifics['pink']['Bearings'] = 'Find the bearing from North Chorltonden Major Light to Kraken (between eyes)';
 $questionSpecifics['pink']['Transits'] = 'Find the Chart Datum (a number on the chart marking the depth of the sea at that point.) at coincidence of transit from N Chorltonden wind farm through the Fairway Buoy, and transit of North and South Cardinal Buoys Between Reef Island and Brownsea Island.';
 $questionSpecifics['pink']['Chess']    = 'Think Chess; Think QUEEN of the Seas.';
